@@ -11,6 +11,7 @@ The plan for what comes next. When told **"continue"**, take the first unchecked
 - [x] Load a project from a link, a zip, or a single JSON file
 - [x] Theme (auto/light/dark), Hebrew/English interface, sound on/off, info page with AI prompt
 - [x] Lessons (reading pages before the games)
+- [x] `npm run export-md`: a whole project as Markdown for expert review
 - [x] Games: cloze (fill the blanks), categorize (sort into groups), multi (select all)
 - [x] Mixed practice (interleaving) per project and per subject
 - [x] DevOps sample project from blearning; small Hebrew sample

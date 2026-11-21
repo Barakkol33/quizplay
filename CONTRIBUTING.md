@@ -171,6 +171,16 @@ npm run validate -- path/to/project.json     # a one-file project
 
 The `$schema` line at the top of each file makes editors like VS Code show errors and autocomplete as you type.
 
+## Getting it reviewed
+
+Before publishing, have someone who knows the subject read everything:
+
+```
+npm run export-md -- path/to/my-project -o review.md --code-lang java
+```
+
+This writes one Markdown file with every lesson and question, the correct answers marked ✅, explanations, and full solutions. Each question shows its `id`, so the reviewer can say exactly which one to fix. It takes a project id, a folder, a `project.json`, or a `.zip`.
+
 ## Getting it on the site
 
 Built-in projects live in `public/projects/<id>/` and are listed in `public/projects/index.json`:

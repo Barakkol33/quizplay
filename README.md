@@ -27,6 +27,7 @@ npm install
 npm run dev          # http://localhost:5173/quizplay/
 npm run validate     # check all projects in public/projects
 npm run validate -- some-project.zip   # check a project someone sent
+npm run export-md -- java-basics --code-lang java   # whole project as one Markdown file, for an expert to review
 npm run build
 ```
 
