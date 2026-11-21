@@ -12,11 +12,6 @@
       "text": "```java\nimport java.util.Random;   // בראש הקובץ!\n\nRandom rnd = new Random();\nint a = rnd.nextInt(10);        // 0 עד 9\nint dice = rnd.nextInt(6) + 1;  // 1 עד 6\ndouble d = rnd.nextDouble();    // 0.0 עד 1.0 (לא כולל)\nboolean b = rnd.nextBoolean();  // true או false\n```\n\n `rnd.nextInt(n)` נותן **0 עד n-1**. אותה נוסחה: `rnd.nextInt(max - min + 1) + min`."
     },
     {
-      "id": "seed",
-      "title": "Seed: אקראי שחוזר",
-      "text": " `new Random(42)` מקבל **seed** (זרע). עם אותו seed מקבלים **אותה סדרת מספרים בכל הרצה**. זה שימושי לבדיקות ולמשחקים שרוצים לשחזר.\n\n`new Random()` בלי seed נותן סדרה אחרת בכל הרצה."
-    },
-    {
       "id": "math-random",
       "title": "דרך נוספת: Math.random()",
       "text": " `Math.random()` מחזיר **double** אקראי מ-`0.0` (כולל) עד `1.0` (**לא כולל**): למשל `0.7314...`.\n\nכדי לקבל מספר שלם בטווח, מכפילים, ממירים ל-int ומזיזים:\n\n```java\n(int) (Math.random() * 6)        // 0 עד 5\n(int) (Math.random() * 6) + 1    // 1 עד 6 (קוביה)\n```\n\n**מלכודת:** `(int) Math.random() * 6` הוא **תמיד 0**! ההמרה נצמדת ל-`Math.random()` (שהוא תמיד פחות מ-1, אז נחתך ל-0), ורק אז הכפל."

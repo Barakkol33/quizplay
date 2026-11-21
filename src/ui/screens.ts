@@ -103,13 +103,14 @@ function noticeView(text: string | undefined, lang: Lang): HTMLElement | null {
   if (!text) return null;
   const parts = text.split(/(\w[\w.+-]*@[\w-]+(?:\.[\w-]+)+)/);
   return h('div', { class: 'notice', role: 'note', lang, dir: dirOf(lang) },
-    h('span', { class: 'notice-icon', 'aria-hidden': 'true' }, 'ℹ️'),
+    h('span', { class: 'notice-icon', 'aria-hidden': 'true' }, '⚠️'),
     h('p', {}, parts.map((p, i) => (i % 2 ? h('a', { href: 'mailto:' + p, dir: 'ltr' }, p) : p))));
 }
 
 function page(root: HTMLElement, header: HTMLElement, ...content: (Node | null)[]): void {
   setLang(store.uiLang());
-  clear(root).append(header, h('main', { class: 'main' }, ...content));
+  clear(root).append(header, h('main', { class: 'main' }, ...content),
+    h('footer', { class: 'disclaimer', role: 'note' }, t('disclaimer')));
   window.scrollTo(0, 0);
 }
 

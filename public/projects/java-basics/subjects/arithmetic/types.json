@@ -24,8 +24,7 @@
           "items": [
             "5 / 2.0",
             "Math.sqrt(9)",
-            "Math.pow(2, 2)",
-            "Math.max(2, 3.0)"
+            "Math.pow(2, 2)"
           ]
         },
         {

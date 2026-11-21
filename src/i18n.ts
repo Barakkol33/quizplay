@@ -4,6 +4,7 @@ const strings = {
   he: {
     appName: 'quizplay',
     tagline: 'לומדים דרך משחק',
+    disclaimer: '⚠️ התוכן נכתב על ידי אנשים ועלול להכיל טעויות. אם משהו לא ברור או נראה סותר, בדקו מול מקור אמין (חומר הלימוד, המורה, או הרצה של הקוד).',
     projects: 'פרויקטים',
     loadProject: 'טעינת פרויקט',
     loadProjectHint: 'מקישור או מקובץ zip, כדי לבדוק תוכן לפני שמוסיפים אותו',
@@ -121,6 +122,7 @@ const strings = {
   en: {
     appName: 'quizplay',
     tagline: 'Learn by playing',
+    disclaimer: '⚠️ Content is written by people and may contain mistakes. If something is unclear or seems contradictory, check it against a reliable source (your course material, your teacher, or by running the code).',
     projects: 'Projects',
     loadProject: 'Load a project',
     loadProjectHint: 'From a link or a zip file, to test content before it is added',

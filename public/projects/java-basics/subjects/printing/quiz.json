@@ -53,19 +53,6 @@
       "answer": 0
     },
     {
-      "id": "fmt-mismatch",
-      "question": "מה יקרה כאן?",
-      "code": "System.out.printf(\"%d%n\", 3.5);",
-      "options": [
-        "שגיאה בזמן ריצה: %d לא מתאים ל-double",
-        "יודפס 3",
-        "יודפס 4",
-        "יודפס 3.5"
-      ],
-      "answer": 0,
-      "explanation": "הקוד מתקמפל, אבל בזמן ריצה נזרקת IllegalFormatConversionException."
-    },
-    {
       "id": "escape-quote",
       "question": "איך מדפיסים גרשיים בתוך מחרוזת?",
       "options": [

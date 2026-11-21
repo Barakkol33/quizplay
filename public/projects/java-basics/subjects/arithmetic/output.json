@@ -24,18 +24,6 @@
       "output": "1"
     },
     {
-      "id": "neg-mod",
-      "code": "System.out.println(-7 % 3);",
-      "output": "-1",
-      "options": [
-        "-1",
-        "2",
-        "1",
-        "-2"
-      ],
-      "explanation": "ב-Java סימן השארית כמו סימן המספר השמאלי."
-    },
-    {
       "id": "precedence",
       "code": "System.out.println(2 + 3 * 4);",
       "output": "14"
@@ -109,30 +97,6 @@
       "id": "ceil-floor",
       "code": "System.out.println(Math.ceil(4.1) + \" \" + Math.floor(4.9));",
       "output": "5.0 4.0"
-    },
-    {
-      "id": "overflow",
-      "code": "System.out.println(Integer.MAX_VALUE + 1);",
-      "output": "-2147483648",
-      "options": [
-        "-2147483648",
-        "2147483648",
-        "שגיאה בזמן ריצה",
-        "0"
-      ],
-      "explanation": "int מוגבל ל-2,147,483,647. מעבר לזה הוא \"מתגלגל\" למספר השלילי הקטן ביותר, בלי שגיאה."
-    },
-    {
-      "id": "div-zero-double",
-      "code": "System.out.println(10.0 / 0);",
-      "output": "Infinity",
-      "options": [
-        "Infinity",
-        "ArithmeticException",
-        "0",
-        "NaN"
-      ],
-      "explanation": "חילוק double באפס נותן Infinity. חילוק int באפס זורק ArithmeticException."
     },
     {
       "id": "digits",

@@ -87,7 +87,7 @@
         "rnd.nextInt(11) + 20",
         "rnd.nextInt(10) + 20",
         "rnd.nextInt(30) + 20",
-        "rnd.nextInt(20, 30)"
+        "rnd.nextInt(31)"
       ],
       "answer": 0,
       "explanation": "יש 11 ערכים (30-20+1), ומתחילים ב-20."
@@ -126,17 +126,6 @@
       ],
       "answer": 0,
       "explanation": "Math נמצא ב-java.lang ולא צריך import. Random נמצא ב-java.util."
-    },
-    {
-      "id": "seed",
-      "question": "מה מיוחד ב-new Random(42)?",
-      "options": [
-        "בכל הרצה יוצאת אותה סדרת מספרים",
-        "כל המספרים יהיו עד 42",
-        "המספר הראשון יהיה 42",
-        "זו שגיאת קומפילציה"
-      ],
-      "answer": 0
     },
     {
       "id": "random-type",

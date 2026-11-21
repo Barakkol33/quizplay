@@ -80,23 +80,6 @@
       "output": "2 + 3 = 5"
     },
     {
-      "id": "printf-width",
-      "code": "System.out.printf(\"[%5d]%n\", 42);",
-      "output": "[   42]",
-      "options": [
-        "[   42]",
-        "[42   ]",
-        "[00042]",
-        "[42]"
-      ],
-      "explanation": "%5d תופס 5 תווים ומיישר לימין: שלושה רווחים ואז 42."
-    },
-    {
-      "id": "printf-zero",
-      "code": "System.out.printf(\"%05d%n\", 42);",
-      "output": "00042"
-    },
-    {
       "id": "mixed-concat",
       "code": "System.out.println(10 + 20 + \"\" + 10 + 20);",
       "output": "301020",

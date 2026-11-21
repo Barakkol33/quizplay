@@ -469,4 +469,8 @@ details summary { cursor: pointer; font-weight: 600; }
   color: var(--text); font-size: .92rem;
 }
 .notice p { margin: 0; }
+.disclaimer {
+  max-width: 900px; margin: 24px auto 16px; padding: 10px 16px; text-align: center;
+  color: var(--muted); font-size: .82rem; border-top: 1px solid var(--border);
+}
 .notice a { font-weight: 600; unicode-bidi: isolate; }
