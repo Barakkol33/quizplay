@@ -140,18 +140,6 @@
       "output": "4 123"
     },
     {
-      "id": "float-error",
-      "code": "System.out.println(0.1 + 0.2);",
-      "output": "0.30000000000000004",
-      "options": [
-        "0.30000000000000004",
-        "0.3",
-        "0.30",
-        "0.2999999999999999"
-      ],
-      "explanation": "double לא מייצג בדיוק כל שבר עשרוני, אז יש שגיאות עיגול זעירות."
-    },
-    {
       "id": "even",
       "code": "int n = 17;\nSystem.out.println(n % 2 == 0);",
       "output": "false"
