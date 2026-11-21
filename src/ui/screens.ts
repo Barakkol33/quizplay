@@ -5,7 +5,8 @@ import { playRound, type RoundItem, type RoundResult } from '../engine';
 import { gameTypes } from '../games';
 import * as store from '../store';
 import * as projects from '../projects';
-import type { Project } from '../types';
+import type { Lang, Project } from '../types';
+import { AI_PROMPT, aboutContent } from './about';
 
 const enc = encodeURIComponent;
 export const link = {
@@ -17,7 +18,61 @@ export const link = {
   review: (pid: string) => `#/review/${enc(pid)}`,
   load: '#/load',
   profile: '#/profile',
+  about: '#/about',
+  aboutAi: '#/about/ai',
 };
+
+const dirOf = (l: Lang) => (l === 'he' ? 'rtl' : 'ltr');
+const ACCENTS = 6;
+const accent = (i: number) => `--accent: var(--c${(i % ACCENTS) + 1})`;
+const DEFAULT_ICONS = ['📘', '🧩', '🧠', '🚀', '🎯', '💡', '🔬', '🌍'];
+
+// ---------- theme & language ----------
+
+export function applyTheme(): void {
+  const th = store.theme();
+  if (th === 'auto') delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = th;
+}
+
+/** Re-runs the router for the current hash. Set by main.ts. */
+let rerender: () => void = () => {};
+export function setRerender(fn: () => void): void {
+  rerender = fn;
+}
+
+const THEME_ICON: Record<store.Theme, string> = { auto: '🌓', light: '☀️', dark: '🌙' };
+const THEME_NEXT: Record<store.Theme, store.Theme> = { auto: 'light', light: 'dark', dark: 'auto' };
+const THEME_LABEL: Record<store.Theme, 'themeAuto' | 'themeLight' | 'themeDark'> = { auto: 'themeAuto', light: 'themeLight', dark: 'themeDark' };
+
+function controls(): HTMLElement {
+  const soundBtn = h('button', { class: 'icon-pill sound-toggle', title: t('soundToggle'), 'aria-label': t('soundToggle'), 'aria-pressed': String(!store.muted()) }, store.muted() ? '🔇' : '🔊');
+  soundBtn.addEventListener('click', () => {
+    store.setMuted(!store.muted());
+    soundBtn.textContent = store.muted() ? '🔇' : '🔊';
+    soundBtn.setAttribute('aria-pressed', String(!store.muted()));
+  });
+  const themeBtn = h('button', { class: 'icon-pill theme-toggle', title: `${t('theme')}: ${t(THEME_LABEL[store.theme()])}` }, THEME_ICON[store.theme()]);
+  themeBtn.addEventListener('click', () => {
+    store.setTheme(THEME_NEXT[store.theme()]);
+    applyTheme();
+    themeBtn.textContent = THEME_ICON[store.theme()];
+    themeBtn.title = `${t('theme')}: ${t(THEME_LABEL[store.theme()])}`;
+  });
+  const other: Lang = store.uiLang() === 'he' ? 'en' : 'he';
+  const langBtn = h('button', {
+    class: 'icon-pill lang-toggle',
+    title: t('language'),
+    lang: other,
+    onclick: () => {
+      store.setUiLang(other);
+      rerender();
+    },
+  }, other === 'he' ? 'עב' : 'EN');
+  return h('div', { class: 'controls' },
+    h('a', { class: 'icon-pill', href: link.about, title: t('info'), 'aria-label': t('info') }, 'ℹ️'),
+    soundBtn, themeBtn, langBtn);
+}
 
 // ---------- shared pieces ----------
 
@@ -26,12 +81,13 @@ function topbar(...crumbs: { text: string; href?: string }[]): HTMLElement {
   return h(
     'header',
     { class: 'topbar' },
-    h('a', { class: 'logo', href: link.home }, '🎯 ', t('appName')),
+    h('a', { class: 'logo', href: link.home }, h('span', { class: 'logo-mark' }, '🎯'), h('span', { class: 'logo-text' }, t('appName'))),
     h('nav', { class: 'crumbs' }, crumbs.map((c) => (c.href ? h('a', { href: c.href, dir: 'auto' }, c.text) : h('span', { dir: 'auto' }, c.text)))),
+    controls(),
     h(
       'a',
       { class: 'user-chip', href: link.profile, title: t('profile') },
-      h('span', { class: 'lvl' }, `${t('level')} ${level}`),
+      h('span', { class: 'lvl' }, String(level)),
       h('span', { class: 'mini-bar' }, h('span', { style: `width:${Math.round(progress * 100)}%` })),
       h('span', { class: 'uname', dir: 'auto' }, store.currentName()),
     ),
@@ -41,8 +97,20 @@ function topbar(...crumbs: { text: string; href?: string }[]): HTMLElement {
 const starsText = (n: number) => '★'.repeat(n) + '☆'.repeat(3 - n);
 
 function page(root: HTMLElement, header: HTMLElement, ...content: (Node | null)[]): void {
+  setLang(store.uiLang());
   clear(root).append(header, h('main', { class: 'main' }, ...content));
   window.scrollTo(0, 0);
+}
+
+function banner(opts: { icon?: string; title: string; sub?: string; lang?: Lang; extra?: (Node | null)[]; i?: number }): HTMLElement {
+  return h('section', { class: 'banner', style: opts.i != null ? accent(opts.i) : null },
+    opts.icon ? h('span', { class: 'banner-icon' }, opts.icon) : null,
+    h('div', { class: 'banner-text', lang: opts.lang, dir: opts.lang ? dirOf(opts.lang) : null },
+      h('h1', { dir: 'auto' }, opts.title),
+      opts.sub ? h('p', { dir: 'auto' }, opts.sub) : null,
+    ),
+    opts.extra?.length ? h('div', { class: 'banner-actions' }, ...opts.extra) : null,
+  );
 }
 
 export function renderError(root: HTMLElement, err: unknown): void {
@@ -62,31 +130,34 @@ function subjectStars(pid: string, p: Project, sid: string): { got: number; max:
 // ---------- home ----------
 
 export async function renderHome(root: HTMLElement): Promise<void> {
-  setLang(store.uiLang());
   const list = await projects.listProjects();
-  const { level, nextAt } = store.levelInfo();
+  const { level, nextAt, progress } = store.levelInfo();
   page(
     root,
     topbar(),
-    h('section', { class: 'hero' },
-      h('h1', {}, t('tagline')),
-      h('p', { class: 'muted' }, `${t('level')} ${level} · ${store.user().xp} / ${nextAt} ${t('xp')}`),
-    ),
+    banner({
+      icon: '🎯',
+      title: t('tagline'),
+      sub: `${t('level')} ${level} · ${store.user().xp} / ${nextAt} ${t('xp')}`,
+      extra: [h('div', { class: 'xp-bar' }, h('span', { style: `width:${Math.round(progress * 100)}%` }))],
+    }),
     h('h2', {}, t('projects')),
     h('div', { class: 'grid' },
-      list.map((e) => {
+      list.map((e, i) => {
         const reviewCount = store.mistakes(e.ref.id).filter((m) => m.stat.review).length;
-        return h('a', { class: 'card-link', href: link.project(e.ref.id), lang: e.ref.lang, dir: e.ref.lang === 'he' ? 'rtl' : 'ltr' },
-          h('strong', {}, e.ref.title),
-          e.ref.description ? h('p', { class: 'muted' }, e.ref.description) : null,
+        return h('a', { class: 'card-link', href: link.project(e.ref.id), style: accent(i) },
+          h('span', { class: 'card-icon' }, e.ref.icon ?? DEFAULT_ICONS[i % DEFAULT_ICONS.length]),
+          h('strong', { lang: e.ref.lang, dir: 'auto' }, e.ref.title),
+          e.ref.description ? h('p', { class: 'muted', lang: e.ref.lang, dir: 'auto' }, e.ref.description) : null,
           h('div', { class: 'tags' },
             h('span', { class: 'tag' }, e.ref.lang === 'he' ? 'עברית' : 'English'),
-            e.origin !== 'builtin' ? h('span', { class: 'tag' }, e.origin === 'zip' ? 'zip' : 'URL') : null,
+            e.origin !== 'builtin' ? h('span', { class: 'tag' }, e.origin === 'zip' ? 'file' : 'URL') : null,
             reviewCount ? h('span', { class: 'tag warn' }, `${reviewCount} ✗`) : null,
           ),
         );
       }),
-      h('a', { class: 'card-link dashed', href: link.load }, h('strong', {}, '＋ ' + t('loadProject')), h('p', { class: 'muted' }, t('loadProjectHint'))),
+      h('a', { class: 'card-link dashed', href: link.load }, h('span', { class: 'card-icon plain' }, '＋'), h('strong', {}, t('loadProject')), h('p', { class: 'muted' }, t('loadProjectHint'))),
+      h('a', { class: 'card-link dashed', href: link.aboutAi }, h('span', { class: 'card-icon plain' }, '✨'), h('strong', {}, t('makeProject')), h('p', { class: 'muted' }, aboutContent[getLang()].promptSteps[1])),
     ),
   );
 }
@@ -95,25 +166,25 @@ export async function renderHome(root: HTMLElement): Promise<void> {
 
 export async function renderProject(root: HTMLElement, pid: string): Promise<void> {
   const { project: p } = await projects.getProject(pid);
-  setLang(p.lang);
   const reviewCount = store.mistakes(pid).filter((m) => m.stat.review).length;
   page(
     root,
     topbar({ text: p.title }),
-    h('section', { class: 'hero' },
-      h('h1', { dir: 'auto' }, p.title),
-      p.description ? h('p', { class: 'muted', dir: 'auto' }, p.description) : null,
-      h('div', { class: 'actions' },
-        h('a', { class: 'btn', href: link.mistakes(pid) }, `📝 ${t('myMistakes')}`, reviewCount ? h('span', { class: 'badge' }, String(reviewCount)) : null),
-      ),
-    ),
+    banner({
+      icon: p.icon,
+      title: p.title,
+      sub: p.description,
+      lang: p.lang,
+      extra: [h('a', { class: 'btn on-banner', href: link.mistakes(pid) }, `📝 ${t('myMistakes')}`, reviewCount ? h('span', { class: 'badge' }, String(reviewCount)) : null)],
+    }),
     h('h2', {}, t('subjects')),
     h('div', { class: 'grid' },
-      p.subjects.map((s) => {
+      p.subjects.map((s, i) => {
         const { got, max } = subjectStars(pid, p, s.id);
-        return h('a', { class: 'card-link', href: link.subject(pid, s.id) },
-          h('strong', { dir: 'auto' }, s.title),
-          s.description ? h('p', { class: 'muted', dir: 'auto' }, s.description) : null,
+        return h('a', { class: 'card-link', href: link.subject(pid, s.id), style: accent(i) },
+          h('span', { class: 'card-icon' }, s.icon ?? DEFAULT_ICONS[i % DEFAULT_ICONS.length]),
+          h('strong', { lang: p.lang, dir: 'auto' }, s.title),
+          s.description ? h('p', { class: 'muted', lang: p.lang, dir: 'auto' }, s.description) : null,
           h('div', { class: 'bar' }, h('div', { class: 'bar-fill', style: `width:${max ? (got / max) * 100 : 0}%` })),
           h('p', { class: 'muted small' }, `${s.games.length} ${t('games')} · ★ ${got}/${max}`),
         );
@@ -126,21 +197,21 @@ export async function renderProject(root: HTMLElement, pid: string): Promise<voi
 
 export async function renderSubject(root: HTMLElement, pid: string, sid: string): Promise<void> {
   const { project: p } = await projects.getProject(pid);
-  setLang(p.lang);
-  const s = p.subjects.find((x) => x.id === sid);
+  const si = p.subjects.findIndex((x) => x.id === sid);
+  const s = p.subjects[si];
   if (!s) throw new Error(`Unknown subject: ${sid}`);
   page(
     root,
     topbar({ text: p.title, href: link.project(pid) }, { text: s.title }),
-    h('section', { class: 'hero' }, h('h1', { dir: 'auto' }, s.title), s.description ? h('p', { class: 'muted', dir: 'auto' }, s.description) : null),
+    banner({ icon: s.icon ?? DEFAULT_ICONS[si % DEFAULT_ICONS.length], title: s.title, sub: s.description, lang: p.lang, i: si }),
     h('div', { class: 'list' },
-      s.games.map((g) => {
+      s.games.map((g, i) => {
         const type = gameTypes[g.type];
         const st = store.gameStat(pid, g.id);
-        return h('a', { class: 'game-row', href: link.play(pid, g.id) },
+        return h('a', { class: 'game-row', href: link.play(pid, g.id), style: accent(si + i) },
           h('span', { class: 'game-icon' }, type?.icon ?? '❓'),
           h('span', { class: 'game-info' },
-            h('strong', { dir: 'auto' }, g.title),
+            h('strong', { lang: p.lang, dir: 'auto' }, g.title),
             h('span', { class: 'muted small' }, type ? type.label[getLang()] : g.type, st ? ` · ${t('score')} ${st.best}` : ''),
           ),
           h('span', { class: 'stars' + (st?.stars ? '' : ' dim') }, starsText(st?.stars ?? 0)),
@@ -156,7 +227,6 @@ export async function renderSubject(root: HTMLElement, pid: string, sid: string)
 export async function renderPlay(root: HTMLElement, pid: string, gid: string): Promise<void> {
   const entry = await projects.getProject(pid);
   const p = entry.project;
-  setLang(p.lang);
   const found = projects.findGame(p, gid);
   if (!found) throw new Error(`Unknown game: ${gid}`);
   const data = await projects.getGame(pid, gid);
@@ -173,6 +243,7 @@ export async function renderPlay(root: HTMLElement, pid: string, gid: string): P
     instructions: data.instructions,
     lives: settings.lives ?? 3,
     timeLimit: settings.timeLimit ?? 0,
+    lang: p.lang,
     onFinish: (r) => {
       const { newBest } = store.recordGame(pid, gid, r.score, r.stars);
       store.addXp(r.score);
@@ -182,6 +253,7 @@ export async function renderPlay(root: HTMLElement, pid: string, gid: string): P
         again: () => renderPlay(root, pid, gid),
         backHref: link.subject(pid, found.subject.id),
         pid,
+        lang: p.lang,
       });
     },
   });
@@ -190,7 +262,7 @@ export async function renderPlay(root: HTMLElement, pid: string, gid: string): P
 function results(
   root: HTMLElement,
   r: RoundResult,
-  o: { title: string; newBest: boolean; again: () => void; backHref: string; pid: string },
+  o: { title: string; newBest: boolean; again: () => void; backHref: string; pid: string; lang: Lang },
 ): void {
   const acc = r.answered ? Math.round((r.correct / r.answered) * 100) : 0;
   if (r.stars > 0) {
@@ -202,7 +274,7 @@ function results(
     topbar(),
     h('section', { class: 'results' },
       h('h1', {}, r.gameOver ? '💔 ' + t('gameOver') : '🏁 ' + t('roundOver')),
-      h('p', { class: 'muted', dir: 'auto' }, o.title),
+      h('p', { class: 'muted', lang: o.lang, dir: 'auto' }, o.title),
       h('div', { class: 'big-stars' }, starsText(r.stars)),
       h('div', { class: 'result-stats' },
         h('div', {}, h('strong', {}, String(r.score)), h('span', { class: 'muted' }, t('score'))),
@@ -217,7 +289,7 @@ function results(
       ),
     ),
     r.wrong.length
-      ? h('div', { class: 'list' },
+      ? h('div', { class: 'list', lang: o.lang, dir: dirOf(o.lang) },
           r.wrong.map(({ item, given }) =>
             h('div', { class: 'mistake' },
               h('p', { dir: 'auto' }, h('strong', {}, item.type.prompt(item.q))),
@@ -255,16 +327,17 @@ async function mistakeItems(pid: string) {
 export async function renderMistakes(root: HTMLElement, pid: string): Promise<void> {
   const { entry, items } = await mistakeItems(pid);
   const p = entry.project;
-  setLang(p.lang);
   const toReview = items.filter((i) => i.stat.review).length;
   page(
     root,
     topbar({ text: p.title, href: link.project(pid) }, { text: t('myMistakes') }),
-    h('section', { class: 'hero' },
-      h('h1', {}, '📝 ' + t('myMistakes')),
-      h('p', { class: 'muted' }, t('reviewHint')),
-      toReview ? h('a', { class: 'btn primary', href: link.review(pid) }, `${t('reviewMistakes')} (${toReview})`) : h('p', {}, t('noMistakes')),
-    ),
+    banner({
+      icon: '📝',
+      title: t('myMistakes'),
+      sub: t('reviewHint'),
+      i: 4,
+      extra: [toReview ? h('a', { class: 'btn on-banner', href: link.review(pid) }, `${t('reviewMistakes')} (${toReview})`) : h('p', {}, t('noMistakes'))],
+    }),
     h('div', { class: 'list' },
       items.map((i) =>
         h('div', { class: 'mistake' + (i.stat.review ? '' : ' done') },
@@ -272,11 +345,13 @@ export async function renderMistakes(root: HTMLElement, pid: string): Promise<vo
             h('span', { class: 'muted small', dir: 'auto' }, `${i.type.icon} ${i.gameTitle}`),
             h('span', { class: 'tag ' + (i.stat.review ? 'warn' : 'good') }, i.stat.review ? t('toReview') : t('mastered')),
           ),
-          h('p', { dir: 'auto' }, h('strong', {}, i.type.prompt(i.q))),
-          i.stat.lastAnswer && i.stat.lastAnswer !== '⏱'
-            ? h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'bad-text' }, `✗ ${t('yourAnswer')}: `), i.stat.lastAnswer)
-            : null,
-          h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'good-text' }, `✓ ${t('correctAnswer')}: `), i.type.answer(i.q, t)),
+          h('div', { lang: p.lang, dir: dirOf(p.lang) },
+            h('p', { dir: 'auto' }, h('strong', {}, i.type.prompt(i.q))),
+            i.stat.lastAnswer && i.stat.lastAnswer !== '⏱'
+              ? h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'bad-text' }, '✗ '), i.stat.lastAnswer)
+              : null,
+            h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'good-text' }, '✓ '), i.type.answer(i.q, t)),
+          ),
           h('p', { class: 'muted small' }, `${t('timesWrong')}: ${i.stat.wrong}`),
         ),
       ),
@@ -287,7 +362,6 @@ export async function renderMistakes(root: HTMLElement, pid: string): Promise<vo
 export async function renderReview(root: HTMLElement, pid: string): Promise<void> {
   const { entry, items } = await mistakeItems(pid);
   const p = entry.project;
-  setLang(p.lang);
   const pool = shuffle(items.filter((i) => i.stat.review)).slice(0, 20);
   const shell = h('div', {});
   page(root, topbar({ text: p.title, href: link.project(pid) }, { text: t('reviewMistakes') }), shell);
@@ -299,9 +373,10 @@ export async function renderReview(root: HTMLElement, pid: string): Promise<void
     title: t('reviewMistakes'),
     lives: 0,
     timeLimit: 0,
+    lang: p.lang,
     onFinish: (r) => {
       store.addXp(r.score);
-      results(root, r, { title: p.title, newBest: false, again: () => renderReview(root, pid), backHref: link.mistakes(pid), pid });
+      results(root, r, { title: p.title, newBest: false, again: () => renderReview(root, pid), backHref: link.mistakes(pid), pid, lang: p.lang });
     },
   });
 }
@@ -309,7 +384,6 @@ export async function renderReview(root: HTMLElement, pid: string): Promise<void
 // ---------- load ----------
 
 export async function renderLoad(root: HTMLElement): Promise<void> {
-  setLang(store.uiLang());
   const status = h('div', { class: 'load-status', 'aria-live': 'polite' });
 
   const after = async (entry: projects.Entry) => {
@@ -328,10 +402,10 @@ export async function renderLoad(root: HTMLElement): Promise<void> {
   const fail = (e: unknown) => status.replaceChildren(h('div', { class: 'panel bad' }, `${t('error')}: ${(e as Error).message}`));
 
   const urlInput = h('input', { class: 'text', type: 'url', dir: 'ltr', placeholder: 'https://…/my-project/' });
-  const fileInput = h('input', { type: 'file', accept: '.zip,application/zip' });
+  const fileInput = h('input', { type: 'file', accept: '.zip,.json,application/zip,application/json' });
   fileInput.addEventListener('change', () => {
     const f = fileInput.files?.[0];
-    if (f) projects.addFromZip(f).then(after, fail);
+    if (f) projects.addFromFile(f).then(after, fail);
   });
 
   const saved = (await projects.listProjects()).filter((e) => e.origin === 'url');
@@ -339,7 +413,8 @@ export async function renderLoad(root: HTMLElement): Promise<void> {
   page(
     root,
     topbar({ text: t('loadProject') }),
-    h('section', { class: 'hero' }, h('h1', {}, t('loadProject')), h('p', { class: 'muted' }, t('loadProjectHint'))),
+    banner({ icon: '📦', title: t('loadProject'), sub: t('loadProjectHint'), i: 1, extra: [h('a', { class: 'btn on-banner', href: link.aboutAi }, '✨ ' + t('makeProject'))] }),
+    h('div', { class: 'panel' }, h('h3', {}, t('fromFile')), h('label', { class: 'btn primary file-btn' }, '⬆ ' + t('fromFile'), fileInput)),
     h('div', { class: 'panel' },
       h('h3', {}, t('fromUrl')),
       h('p', { class: 'muted small' }, t('fromUrlHint')),
@@ -351,7 +426,6 @@ export async function renderLoad(root: HTMLElement): Promise<void> {
         },
       }, urlInput, h('button', { class: 'btn primary', type: 'submit' }, t('load'))),
     ),
-    h('div', { class: 'panel' }, h('h3', {}, t('fromFile')), fileInput),
     status,
     saved.length
       ? h('div', { class: 'list' },
@@ -366,11 +440,51 @@ export async function renderLoad(root: HTMLElement): Promise<void> {
   );
 }
 
+// ---------- about ----------
+
+export function renderAbout(root: HTMLElement, toAi = false): void {
+  const c = aboutContent[store.uiLang()];
+  const copyBtn = h('button', { class: 'btn primary copy-prompt' }, '📋 ' + t('copy'));
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(AI_PROMPT);
+    } catch {
+      const r = document.createRange();
+      r.selectNodeContents(pre);
+      getSelection()?.removeAllRanges();
+      getSelection()?.addRange(r);
+      document.execCommand('copy');
+    }
+    copyBtn.textContent = '✓ ' + t('copied');
+    setTimeout(() => (copyBtn.textContent = '📋 ' + t('copy')), 2000);
+  });
+  const pre = h('pre', { class: 'prompt', dir: 'ltr', lang: 'en', tabindex: '0' }, AI_PROMPT);
+
+  page(
+    root,
+    topbar({ text: t('info') }),
+    banner({ icon: 'ℹ️', title: t('appName'), sub: c.intro, i: 2 }),
+    ...c.sections.map((s, i) =>
+      h('section', { class: 'panel info', style: accent(i) },
+        h('h2', {}, s.title),
+        s.body.map((b) => (Array.isArray(b) ? h('ul', {}, b.map((x) => h('li', {}, x))) : h('p', {}, b))),
+      ),
+    ),
+    h('section', { class: 'panel info ai', id: 'ai', style: accent(5) },
+      h('h2', {}, '✨ ' + c.promptTitle),
+      h('ol', {}, c.promptSteps.map((x) => h('li', {}, x))),
+      h('div', { class: 'prompt-head' }, h('strong', {}, 'Prompt'), copyBtn),
+      pre,
+      h('div', { class: 'actions' }, h('a', { class: 'btn', href: link.load }, '📦 ' + t('loadProject'))),
+    ),
+  );
+  if (toAi) setTimeout(() => document.getElementById('ai')?.scrollIntoView({ behavior: 'smooth' }), 50);
+}
+
 // ---------- profile ----------
 
 export function renderProfile(root: HTMLElement): void {
-  setLang(store.uiLang());
-  const rerender = () => renderProfile(root);
+  const re = () => rerender();
   const nameInput = h('input', { class: 'text', dir: 'auto', placeholder: t('name') });
   const renameInput = h('input', { class: 'text', dir: 'auto', value: store.currentName() });
   const importInput = h('input', { type: 'file', accept: '.json,application/json' });
@@ -380,7 +494,7 @@ export function renderProfile(root: HTMLElement): void {
     if (!f) return;
     try {
       store.importJson(await f.text());
-      rerender();
+      re();
     } catch (e) {
       msg.textContent = `${t('error')}: ${(e as Error).message}`;
     }
@@ -391,18 +505,34 @@ export function renderProfile(root: HTMLElement): void {
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
-  const { level, nextAt } = store.levelInfo();
+  const { level, nextAt, progress } = store.levelInfo();
+  const seg = <T extends string>(current: T, options: [T, string][], set: (v: T) => void) =>
+    h('div', { class: 'segmented' },
+      options.map(([v, label]) => h('button', { class: v === current ? 'active' : '', 'aria-pressed': String(v === current), onclick: () => { set(v); re(); } }, label)));
 
   page(
     root,
     topbar({ text: t('profile') }),
-    h('section', { class: 'hero' },
-      h('h1', { dir: 'auto' }, store.currentName()),
-      h('p', { class: 'muted' }, `${t('level')} ${level} · ${store.user().xp} / ${nextAt} ${t('xp')}`),
+    banner({
+      icon: '🧑‍🎓',
+      title: store.currentName(),
+      sub: `${t('level')} ${level} · ${store.user().xp} / ${nextAt} ${t('xp')}`,
+      i: 3,
+      extra: [h('div', { class: 'xp-bar' }, h('span', { style: `width:${Math.round(progress * 100)}%` }))],
+    }),
+    h('div', { class: 'panel' },
+      h('h3', {}, t('name')),
       h('form', {
         class: 'typein-row',
-        onsubmit: (e: Event) => { e.preventDefault(); store.renameUser(store.currentName(), renameInput.value); rerender(); },
+        onsubmit: (e: Event) => { e.preventDefault(); store.renameUser(store.currentName(), renameInput.value); re(); },
       }, renameInput, h('button', { class: 'btn', type: 'submit' }, '✎')),
+    ),
+    h('div', { class: 'panel settings' },
+      h('div', { class: 'setting' }, h('h3', {}, t('uiLanguage')), seg<Lang>(store.uiLang(), [['he', 'עברית'], ['en', 'English']], store.setUiLang)),
+      h('div', { class: 'setting' }, h('h3', {}, t('theme')),
+        seg<store.Theme>(store.theme(), [['auto', '🌓 ' + t('themeAuto')], ['light', '☀️ ' + t('themeLight')], ['dark', '🌙 ' + t('themeDark')]], (v) => { store.setTheme(v); applyTheme(); })),
+      h('div', { class: 'setting' }, h('h3', {}, t('sound')),
+        seg<'on' | 'off'>(store.muted() ? 'off' : 'on', [['on', '🔊 ' + t('on')], ['off', '🔇 ' + t('off')]], (v) => store.setMuted(v === 'off'))),
     ),
     h('div', { class: 'panel' },
       h('h3', {}, t('users')),
@@ -412,23 +542,14 @@ export function renderProfile(root: HTMLElement): void {
             h('span', { class: 'game-info' }, h('strong', { dir: 'auto' }, n)),
             n === store.currentName()
               ? h('span', { class: 'tag good' }, t('current'))
-              : h('button', { class: 'btn small', onclick: () => { store.switchUser(n); rerender(); } }, t('switchTo')),
+              : h('button', { class: 'btn small', onclick: () => { store.switchUser(n); re(); } }, t('switchTo')),
           ),
         ),
       ),
       h('form', {
         class: 'typein-row',
-        onsubmit: (e: Event) => { e.preventDefault(); store.switchUser(nameInput.value); rerender(); },
+        onsubmit: (e: Event) => { e.preventDefault(); store.switchUser(nameInput.value); re(); },
       }, nameInput, h('button', { class: 'btn primary', type: 'submit' }, t('add'))),
-    ),
-    h('div', { class: 'panel' },
-      h('h3', {}, t('uiLanguage')),
-      h('div', { class: 'actions' },
-        h('button', { class: 'btn' + (store.uiLang() === 'he' ? ' primary' : ''), onclick: () => { store.setUiLang('he'); rerender(); } }, 'עברית'),
-        h('button', { class: 'btn' + (store.uiLang() === 'en' ? ' primary' : ''), onclick: () => { store.setUiLang('en'); rerender(); } }, 'English'),
-      ),
-      h('h3', {}, t('sound')),
-      h('button', { class: 'btn', onclick: () => { store.setMuted(!store.muted()); rerender(); } }, store.muted() ? '🔇 ' + t('off') : '🔊 ' + t('on')),
     ),
     h('div', { class: 'panel' },
       h('p', { class: 'muted small' }, t('progressNote')),
@@ -437,7 +558,7 @@ export function renderProfile(root: HTMLElement): void {
         h('label', { class: 'btn' }, '⬆ ' + t('importProgress'), importInput),
       ),
       msg,
-      h('button', { class: 'btn danger', onclick: () => { if (confirm(t('confirmReset'))) { store.resetUser(); rerender(); } } }, t('resetUser')),
+      h('button', { class: 'btn danger', onclick: () => { if (confirm(t('confirmReset'))) { store.resetUser(); re(); } } }, t('resetUser')),
     ),
   );
 }

@@ -3,11 +3,13 @@
   "id": "sample-he",
   "title": "דוגמה: מדע וגאוגרפיה",
   "lang": "he",
+  "icon": "📚",
   "description": "פרויקט קטן בעברית שמראה את כל סוגי המשחקים",
   "subjects": [
     {
       "id": "science",
       "title": "מדע",
+      "icon": "🔬",
       "games": [
         { "id": "sci-mcq", "title": "חידון מדע", "type": "mcq", "file": "subjects/science/mcq.json" },
         { "id": "sci-tf", "title": "נכון או לא נכון", "type": "truefalse", "file": "subjects/science/tf.json" }
@@ -16,6 +18,7 @@
     {
       "id": "geo",
       "title": "גאוגרפיה",
+      "icon": "🌍",
       "games": [
         { "id": "geo-capitals", "title": "בירות", "type": "typein", "file": "subjects/geo/capitals.json" },
         { "id": "geo-match", "title": "ארץ ויבשת", "type": "match", "file": "subjects/geo/match.json" },

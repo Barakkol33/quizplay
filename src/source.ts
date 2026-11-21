@@ -20,6 +20,17 @@ export function urlSource(base: string): Source {
   };
 }
 
+/** A whole project in one JSON file (games inline). */
+export function jsonSource(project: unknown): Source {
+  return {
+    async readJson<T>(path: string): Promise<T> {
+      if (clean(path) === 'project.json') return project as T;
+      throw new Error(`Single-file project has no ${path}: put the game's questions inline`);
+    },
+    assetUrl: (path) => (/^(https?:|data:)/.test(path) ? path : ''),
+  };
+}
+
 const MIME: Record<string, string> = {
   png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif',
   webp: 'image/webp', svg: 'image/svg+xml', mp3: 'audio/mpeg', ogg: 'audio/ogg',

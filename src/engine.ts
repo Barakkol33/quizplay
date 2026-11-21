@@ -4,7 +4,7 @@ import { t } from './i18n';
 import { sound } from './effects';
 import { onLeave } from './leave';
 import * as store from './store';
-import type { GameSettings, Question } from './types';
+import type { GameSettings, Lang, Question } from './types';
 import type { GameType } from './games/types';
 import type { Source } from './source';
 
@@ -32,6 +32,8 @@ export interface RoundOptions {
   instructions?: string;
   lives: number;
   timeLimit: number;
+  /** Language of the content; the question area takes its direction. */
+  lang?: Lang;
   onFinish: (r: RoundResult) => void;
 }
 
@@ -70,7 +72,7 @@ export function playRound(root: HTMLElement, items: RoundItem[], opts: RoundOpti
   const streakEl = h('span', { class: 'stat streak' });
   const progress = h('div', { class: 'bar' }, h('div', { class: 'bar-fill' }));
   const timeBar = h('div', { class: 'bar time', hidden: !opts.timeLimit }, h('div', { class: 'bar-fill' }));
-  const body = h('div', { class: 'play-body' });
+  const body = h('div', { class: 'play-body', lang: opts.lang, dir: opts.lang ? (opts.lang === 'he' ? 'rtl' : 'ltr') : null });
   const feedback = h('div', { class: 'feedback', 'aria-live': 'polite' });
 
   const updateHud = () => {

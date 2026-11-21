@@ -1,5 +1,5 @@
 import type { GameData, GameRef, Project, ProjectRef, Subject } from './types';
-import { urlSource, zipSource, type Source } from './source';
+import { jsonSource, urlSource, zipSource, type Source } from './source';
 import { gameTypes } from './games';
 import * as store from './store';
 
@@ -61,8 +61,7 @@ export async function getGame(pid: string, gid: string): Promise<GameData> {
   if (cached) return cached;
   const found = findGame(e.project, gid);
   if (!found) throw new Error(`Unknown game: ${gid}`);
-  const data = await e.source.readJson<GameData>(found.game.file);
-  data.type ??= found.game.type;
+  const data = await readGame(e.source, found.game);
   const type = gameTypes[data.type];
   if (!type) throw new Error(`Unknown game type: ${data.type}`);
   data.questions = (data.questions ?? []).filter((q) => {
@@ -74,9 +73,20 @@ export async function getGame(pid: string, gid: string): Promise<GameData> {
   return data;
 }
 
+/** A game is either inline in project.json or in its own file. */
+async function readGame(source: Source, g: GameRef): Promise<GameData> {
+  if (Array.isArray(g.questions)) {
+    return { type: g.type, title: g.title, instructions: g.instructions, settings: g.settings, questions: g.questions };
+  }
+  if (!g.file) throw new Error(`${g.id}: needs "file" or inline "questions"`);
+  const data = await source.readJson<GameData>(g.file);
+  data.type ??= g.type;
+  return data;
+}
+
 function register(project: Project, source: Source, origin: Entry['origin'], url?: string): Entry {
   if (!project?.id || !Array.isArray(project.subjects)) throw new Error('project.json needs "id" and "subjects"');
-  const ref: ProjectRef = { id: project.id, title: project.title, lang: project.lang, path: '', description: project.description };
+  const ref: ProjectRef = { id: project.id, title: project.title, lang: project.lang, path: '', description: project.description, icon: project.icon };
   const entry: Entry = { ref, source, origin, url, project, games: new Map() };
   registry.set(project.id, entry);
   return entry;
@@ -91,7 +101,12 @@ export async function addFromUrl(url: string, remember = true): Promise<Entry> {
   return entry;
 }
 
-export async function addFromZip(file: Blob): Promise<Entry> {
+/** A .zip of the project folder, or a single project.json with the games inline. */
+export async function addFromFile(file: File): Promise<Entry> {
+  if (file.name.toLowerCase().endsWith('.json')) {
+    const project = JSON.parse(await file.text()) as Project;
+    return register(project, jsonSource(project), 'zip');
+  }
   const source = await zipSource(file);
   const project = await source.readJson<Project>('project.json');
   return register(project, source, 'zip');
@@ -114,20 +129,21 @@ export async function checkProject(pid: string): Promise<string[]> {
       if (seen.has(g.id)) problems.push(`Duplicate game id: ${g.id}`);
       seen.add(g.id);
       if (!gameTypes[g.type]) problems.push(`${g.id}: unknown type "${g.type}"`);
+      const where = g.file ?? g.id;
       try {
-        const data = await e.source.readJson<GameData>(g.file);
+        const data = await readGame(e.source, g);
         const type = gameTypes[data.type ?? g.type];
         const ids = new Set<string>();
         for (const q of data.questions ?? []) {
-          if (!q.id) problems.push(`${g.file}: a question has no id`);
-          else if (ids.has(q.id)) problems.push(`${g.file}: duplicate question id ${q.id}`);
+          if (!q.id) problems.push(`${where}: a question has no id`);
+          else if (ids.has(q.id)) problems.push(`${where}: duplicate question id ${q.id}`);
           ids.add(q.id);
           const p = type?.check(q);
-          if (p) problems.push(`${g.file} / ${q.id}: ${p}`);
+          if (p) problems.push(`${where} / ${q.id}: ${p}`);
         }
-        if (!data.questions?.length) problems.push(`${g.file}: no questions`);
+        if (!data.questions?.length) problems.push(`${where}: no questions`);
       } catch (err) {
-        problems.push(`${g.file}: ${(err as Error).message}`);
+        problems.push(`${where}: ${(err as Error).message}`);
       }
     }
   }

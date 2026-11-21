@@ -34,7 +34,10 @@ interface State {
   uiLang: Lang;
   muted: boolean;
   customUrls: string[];
+  theme?: Theme;
 }
+
+export type Theme = 'auto' | 'light' | 'dark';
 
 const KEY = 'quizplay:v1';
 const REVIEW_EXIT_STREAK = 2;
@@ -51,9 +54,9 @@ function load(): State {
   } catch {
     /* storage blocked or corrupt: start fresh */
   }
-  const uiLang: Lang = navigator.language?.startsWith('en') ? 'en' : 'he';
-  const name = uiLang === 'he' ? 'שחקן' : 'Player';
-  return { v: 1, current: name, users: { [name]: emptyUser() }, uiLang, muted: false, customUrls: [] };
+  const uiLang: Lang = 'he';
+  const name = 'שחקן';
+  return { v: 1, current: name, users: { [name]: emptyUser() }, uiLang, muted: false, customUrls: [], theme: 'auto' };
 }
 
 let state = load();
@@ -163,6 +166,12 @@ export function levelInfo(xp = user().xp): { level: number; progress: number; ne
 export const uiLang = () => state.uiLang;
 export function setUiLang(l: Lang): void {
   state.uiLang = l;
+  save();
+}
+
+export const theme = (): Theme => state.theme ?? 'auto';
+export function setTheme(th: Theme): void {
+  state.theme = th;
   save();
 }
 

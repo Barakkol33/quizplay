@@ -9,8 +9,10 @@ A general app for learning through games. Content comes as **projects** made of 
 - **Gamification:** score with streak multiplier, hearts, an optional timer, 1–3 stars per game, XP and levels, confetti.
 - **Mistakes are remembered** for each user: a "My mistakes" page per project, and a practice round built from them. A question leaves practice after two correct answers in a row.
 - **Progress is stored in the browser** (localStorage). Several users can share one device, and progress can be exported to and imported from a JSON file. There is no server; everything is on GitHub Pages.
-- **Hebrew and English:** each project declares its language, and the page switches between RTL and LTR.
-- **Try content before it is added:** the "Load a project" page opens a project from a link or a zip file.
+- **Hebrew and English:** the interface language is the player's choice (עב / EN in the top bar, Hebrew by default). Each project declares the language of its content, and the question area takes that direction.
+- **Settings in the top bar:** sound on/off, theme (auto, light, dark), language, and an info page.
+- **Try content before it is added:** the "Load a project" page opens a project from a link, a zip, or a single JSON file.
+- **Make content with AI:** the info page has a ready prompt that turns study material into a project file.
 
 To write content, see [CONTRIBUTING.md](CONTRIBUTING.md).
 

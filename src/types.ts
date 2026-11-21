@@ -8,20 +8,25 @@ export interface ProjectRef {
   /** Folder of the project, relative to projects/. */
   path: string;
   description?: string;
+  icon?: string;
 }
 
 export interface GameRef {
   id: string;
   title: string;
   type: string;
-  /** Game data file, relative to the project folder. */
-  file: string;
+  /** Game data file, relative to the project folder. Or put the game inline: */
+  file?: string;
+  instructions?: string;
+  settings?: GameSettings;
+  questions?: Question[];
 }
 
 export interface Subject {
   id: string;
   title: string;
   description?: string;
+  icon?: string;
   games: GameRef[];
 }
 
@@ -30,6 +35,7 @@ export interface Project {
   title: string;
   lang: Lang;
   description?: string;
+  icon?: string;
   subjects: Subject[];
 }
 

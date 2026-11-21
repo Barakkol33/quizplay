@@ -1,6 +1,36 @@
 # Writing a project for quizplay
 
-A project is a folder of JSON files: one `project.json` that lists the subjects and games, and one file per game with its questions. Send it as a **zip of the folder**.
+**The fastest way:** open the site's info page (ℹ️), copy the AI prompt, and give it to Claude, ChatGPT or Gemini together with your study material. You get back a `project.json` to load and check on the "Load a project" page.
+
+A project comes in one of two forms:
+
+- **One file:** a single `project.json` with every game's questions inline. Easiest to write and to send.
+- **A folder:** `project.json` lists the subjects and games, and each game has its own file. Better for big projects and for images. Send it as a **zip of the folder**.
+
+### One file
+
+Each game in `project.json` has `questions` (and optionally `settings` and `instructions`) instead of `file`:
+
+```json
+{
+  "id": "my-project", "title": "My project", "lang": "en", "icon": "📘",
+  "subjects": [
+    {
+      "id": "basics", "title": "The basics", "icon": "🧪",
+      "games": [
+        {
+          "id": "basics-quiz", "title": "Quiz", "type": "mcq", "settings": { "lives": 3 },
+          "questions": [
+            { "id": "q1", "question": "2 + 2 = ?", "options": ["4", "3", "5", "22"], "answer": 0 }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### A folder
 
 ```
 my-project/
@@ -38,7 +68,8 @@ You can test your zip before sending it: open the site, choose **Load a project*
 ```
 
 - `id`: lowercase letters, digits and dashes. **Don't change ids after people start playing**, because progress and mistakes are saved by id.
-- `lang`: `"he"` (right to left) or `"en"` (left to right).
+- `lang`: `"he"` (right to left) or `"en"` (left to right). It sets the direction of the content; the interface language is each player's own choice.
+- `icon` (optional, on the project and on each subject): an emoji shown on its card.
 - Game `id`s must be unique in the whole project.
 
 ## A game file
@@ -103,6 +134,7 @@ With Node installed, in this repo:
 ```
 npm install
 npm run validate -- path/to/my-project.zip
+npm run validate -- path/to/project.json     # a one-file project
 ```
 
 The `$schema` line at the top of each file makes editors like VS Code show errors and autocomplete as you type.

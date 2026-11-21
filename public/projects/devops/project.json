@@ -3,11 +3,13 @@
   "id": "devops",
   "title": "DevOps fundamentals",
   "lang": "en",
+  "icon": "⚙️",
   "description": "Linux, networking, Docker, Kubernetes and delivery. Based on the blearning DevOps guide.",
   "subjects": [
     {
       "id": "linux",
       "title": "Linux and the command line",
+      "icon": "🐧",
       "description": "Terms, everyday commands, and reading logs with pipes",
       "games": [
         { "id": "linux-terms", "title": "Linux terms", "type": "mcq", "file": "subjects/linux/terms.json" },
@@ -18,6 +20,7 @@
     {
       "id": "networking",
       "title": "Networking",
+      "icon": "🌐",
       "description": "Follow one request from the client to the server",
       "games": [
         { "id": "net-terms", "title": "Networking terms", "type": "mcq", "file": "subjects/networking/terms.json" },
@@ -28,6 +31,7 @@
     {
       "id": "docker",
       "title": "Docker",
+      "icon": "🐳",
       "description": "Images, containers, volumes, networks and Compose",
       "games": [
         { "id": "docker-quiz", "title": "Docker quiz", "type": "mcq", "file": "subjects/docker/quiz.json" },
@@ -38,6 +42,7 @@
     {
       "id": "kubernetes",
       "title": "Kubernetes",
+      "icon": "☸️",
       "description": "The control plane, the nodes, and what happens on kubectl apply",
       "games": [
         { "id": "k8s-quiz", "title": "Architecture quiz", "type": "mcq", "file": "subjects/kubernetes/quiz.json" },
@@ -48,6 +53,7 @@
     {
       "id": "delivery",
       "title": "Delivery: Git, CI/CD, deployments",
+      "icon": "🚀",
       "description": "From a commit to production, and back again",
       "games": [
         { "id": "delivery-quiz", "title": "Delivery quiz", "type": "mcq", "file": "subjects/delivery/quiz.json" },

@@ -5,6 +5,7 @@
  *   npm run validate                     all projects in public/projects/index.json
  *   npm run validate -- path/to/project  one project folder (with project.json)
  *   npm run validate -- project.zip      a zipped project, as contributors send it
+ *   npm run validate -- project.json     a single-file project (games inline)
  */
 import { readFile, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -28,6 +29,18 @@ function folderReader(dir) {
     label: dir,
     has: (rel) => existsSync(path.join(dir, rel)),
     json: async (rel) => JSON.parse(await readFile(path.join(dir, rel), 'utf8')),
+  };
+}
+
+/** One project.json with every game inline. */
+function singleFileReader(file) {
+  return {
+    label: file,
+    has: (rel) => rel === 'project.json',
+    json: async (rel) => {
+      if (rel !== 'project.json') throw new Error('single-file project: put the questions inline');
+      return JSON.parse(await readFile(file, 'utf8'));
+    },
   };
 }
 
@@ -64,30 +77,37 @@ async function validate(reader) {
     for (const g of s.games) {
       if (gameIds.has(g.id)) problems.push(`project.json: duplicate game id "${g.id}" (must be unique in the project)`);
       gameIds.add(g.id);
-      if (!reader.has(g.file)) {
-        problems.push(`${g.file}: file not found`);
-        continue;
-      }
       let data;
-      try {
-        data = await reader.json(g.file);
-      } catch (e) {
-        problems.push(`${g.file}: ${e.message}`);
-        continue;
+      const where = g.file ?? `game "${g.id}"`;
+      if (Array.isArray(g.questions)) {
+        data = { type: g.type, questions: g.questions };
+        if (g.settings) data.settings = g.settings;
+        if (g.instructions) data.instructions = g.instructions;
+      } else {
+        if (!reader.has(g.file)) {
+          problems.push(`${g.file}: file not found`);
+          continue;
+        }
+        try {
+          data = await reader.json(g.file);
+        } catch (e) {
+          problems.push(`${g.file}: ${e.message}`);
+          continue;
+        }
       }
       if (!checkGame(data)) {
-        problems.push(...fmt(checkGame.errors).map((m) => `${g.file} ${m}`));
+        problems.push(...fmt(checkGame.errors).map((m) => `${where} ${m}`));
         continue;
       }
-      if (data.type !== g.type) problems.push(`${g.file}: type is "${data.type}" but project.json says "${g.type}"`);
+      if (data.type !== g.type) problems.push(`${where}: type is "${data.type}" but project.json says "${g.type}"`);
       const ids = new Set();
       for (const q of data.questions) {
         questions++;
-        if (ids.has(q.id)) problems.push(`${g.file}: duplicate question id "${q.id}"`);
+        if (ids.has(q.id)) problems.push(`${where}: duplicate question id "${q.id}"`);
         ids.add(q.id);
-        if (data.type === 'mcq' && q.answer >= q.options.length) problems.push(`${g.file} / ${q.id}: answer ${q.answer} but only ${q.options.length} options`);
-        if (data.type === 'mcq' && new Set(q.options).size !== q.options.length) problems.push(`${g.file} / ${q.id}: two options are the same`);
-        if (q.image && !/^(https?:|data:)/.test(q.image) && !reader.has(q.image)) problems.push(`${g.file} / ${q.id}: image not found: ${q.image}`);
+        if (data.type === 'mcq' && q.answer >= q.options.length) problems.push(`${where} / ${q.id}: answer ${q.answer} but only ${q.options.length} options`);
+        if (data.type === 'mcq' && new Set(q.options).size !== q.options.length) problems.push(`${where} / ${q.id}: two options are the same`);
+        if (q.image && !/^(https?:|data:)/.test(q.image) && !reader.has(q.image)) problems.push(`${where} / ${q.id}: image not found: ${q.image}`);
       }
     }
   }
@@ -99,9 +119,11 @@ const targets = [];
 const arg = process.argv[2];
 if (arg) {
   const p = path.resolve(arg);
-  const isZip = p.toLowerCase().endsWith('.zip');
-  if (!isZip && !(await stat(p)).isDirectory()) throw new Error(`${arg}: not a folder or a .zip`);
-  targets.push(isZip ? await zipReader(p) : folderReader(p));
+  const lower = p.toLowerCase();
+  if (lower.endsWith('.zip')) targets.push(await zipReader(p));
+  else if (lower.endsWith('.json')) targets.push(singleFileReader(p));
+  else if ((await stat(p)).isDirectory()) targets.push(folderReader(p));
+  else throw new Error(`${arg}: not a folder, .zip or .json`);
 } else {
   const base = path.join(root, 'public/projects');
   const index = JSON.parse(await readFile(path.join(base, 'index.json'), 'utf8'));
