@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "match",
+  "title": "Commands and what they do",
+  "settings": { "lives": 0 },
+  "questions": [
+    {
+      "id": "grep-flags",
+      "prompt": "grep options",
+      "pairs": [
+        ["grep -i", "Case-insensitive"],
+        ["grep -r", "Search a directory recursively"],
+        ["grep -v", "Show lines that do NOT match"],
+        ["grep -c", "Count matching lines"],
+        ["grep -n", "Show line numbers"]
+      ]
+    },
+    {
+      "id": "file-ops",
+      "prompt": "File operations",
+      "pairs": [
+        ["mkdir -p a/b/c", "Create nested directories"],
+        ["cp -r src/ dst/", "Copy recursively"],
+        ["mv old.txt new.txt", "Move or rename"],
+        ["touch file.txt", "Create an empty file"],
+        ["ls -lah", "List all files, human-readable sizes"]
+      ]
+    }
+  ]
+}

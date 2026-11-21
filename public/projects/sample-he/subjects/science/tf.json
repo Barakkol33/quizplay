@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "truefalse",
+  "title": "נכון או לא נכון",
+  "settings": { "timeLimit": 15 },
+  "questions": [
+    { "id": "sound-space", "statement": "קול עובר בחלל הריק.", "answer": false, "explanation": "קול צריך חומר כדי לעבור, ובחלל אין אוויר." },
+    { "id": "sun-star", "statement": "השמש היא כוכב.", "answer": true },
+    { "id": "whale-fish", "statement": "הלווייתן הוא דג.", "answer": false, "explanation": "הלווייתן הוא יונק." }
+  ]
+}

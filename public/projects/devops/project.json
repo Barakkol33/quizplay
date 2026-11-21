@@ -1,0 +1,59 @@
+{
+  "$schema": "../../../schemas/project.schema.json",
+  "id": "devops",
+  "title": "DevOps fundamentals",
+  "lang": "en",
+  "description": "Linux, networking, Docker, Kubernetes and delivery. Based on the blearning DevOps guide.",
+  "subjects": [
+    {
+      "id": "linux",
+      "title": "Linux and the command line",
+      "description": "Terms, everyday commands, and reading logs with pipes",
+      "games": [
+        { "id": "linux-terms", "title": "Linux terms", "type": "mcq", "file": "subjects/linux/terms.json" },
+        { "id": "linux-commands", "title": "Which command?", "type": "typein", "file": "subjects/linux/commands.json" },
+        { "id": "linux-match", "title": "Commands and what they do", "type": "match", "file": "subjects/linux/match.json" }
+      ]
+    },
+    {
+      "id": "networking",
+      "title": "Networking",
+      "description": "Follow one request from the client to the server",
+      "games": [
+        { "id": "net-terms", "title": "Networking terms", "type": "mcq", "file": "subjects/networking/terms.json" },
+        { "id": "net-tf", "title": "True or false", "type": "truefalse", "file": "subjects/networking/truefalse.json" },
+        { "id": "net-order", "title": "Debug a request, step by step", "type": "order", "file": "subjects/networking/order.json" }
+      ]
+    },
+    {
+      "id": "docker",
+      "title": "Docker",
+      "description": "Images, containers, volumes, networks and Compose",
+      "games": [
+        { "id": "docker-quiz", "title": "Docker quiz", "type": "mcq", "file": "subjects/docker/quiz.json" },
+        { "id": "docker-tf", "title": "Container myths", "type": "truefalse", "file": "subjects/docker/truefalse.json" },
+        { "id": "docker-cards", "title": "Docker commands", "type": "flashcards", "file": "subjects/docker/cards.json" }
+      ]
+    },
+    {
+      "id": "kubernetes",
+      "title": "Kubernetes",
+      "description": "The control plane, the nodes, and what happens on kubectl apply",
+      "games": [
+        { "id": "k8s-quiz", "title": "Architecture quiz", "type": "mcq", "file": "subjects/kubernetes/quiz.json" },
+        { "id": "k8s-match", "title": "Components", "type": "match", "file": "subjects/kubernetes/match.json" },
+        { "id": "k8s-order", "title": "From kubectl to a running container", "type": "order", "file": "subjects/kubernetes/order.json" }
+      ]
+    },
+    {
+      "id": "delivery",
+      "title": "Delivery: Git, CI/CD, deployments",
+      "description": "From a commit to production, and back again",
+      "games": [
+        { "id": "delivery-quiz", "title": "Delivery quiz", "type": "mcq", "file": "subjects/delivery/quiz.json" },
+        { "id": "delivery-match", "title": "Deployment strategies", "type": "match", "file": "subjects/delivery/match.json" },
+        { "id": "delivery-speed", "title": "Speed round", "type": "truefalse", "file": "subjects/delivery/speed.json" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "Networking terms",
+  "settings": { "lives": 3 },
+  "questions": [
+    {
+      "id": "cidr-24",
+      "question": "How many addresses are in 10.0.1.0/24?",
+      "options": ["256", "24", "65,536", "16"],
+      "answer": 0,
+      "explanation": "/24 leaves 8 bits for hosts: 2⁸ = 256 addresses, 10.0.1.0 to 10.0.1.255."
+    },
+    {
+      "id": "port-ssh",
+      "question": "Which port does SSH use by default?",
+      "options": ["22", "80", "443", "5432"],
+      "answer": 0,
+      "explanation": "22 = SSH, 80 = HTTP, 443 = HTTPS, 5432 = PostgreSQL."
+    },
+    {
+      "id": "port-postgres",
+      "question": "5432 is the default port of…",
+      "options": ["PostgreSQL", "Redis", "HTTPS", "SSH"],
+      "answer": 0
+    },
+    {
+      "id": "cname",
+      "question": "What does a DNS CNAME record hold?",
+      "options": ["An alias that points to another name", "An IPv4 address", "The mail servers of the domain", "Free text for domain ownership"],
+      "answer": 0,
+      "explanation": "A holds an IPv4 address, AAAA an IPv6 address, MX mail servers, TXT free text, NS who answers for the zone."
+    },
+    {
+      "id": "ttl",
+      "question": "A DNS record has a long TTL. What happens when you change it?",
+      "options": ["The change takes long to reach everyone", "The change is rejected", "The change is instant", "The record is deleted after the TTL"],
+      "answer": 0
+    },
+    {
+      "id": "tcp-udp",
+      "question": "Which transport protocol is a reliable, ordered connection?",
+      "options": ["TCP", "UDP", "DNS", "ICMP"],
+      "answer": 0
+    },
+    {
+      "id": "nxdomain",
+      "question": "A DNS lookup answers NXDOMAIN. What does it mean?",
+      "options": ["The name does not exist", "The server is down", "The record has expired", "The name has no IPv6 address"],
+      "answer": 0
+    },
+    {
+      "id": "lb-l7",
+      "question": "What can a layer 7 load balancer do that a layer 4 one cannot?",
+      "options": ["Route by HTTP path or header", "Spread TCP connections", "Forward a port", "Drop traffic by source IP"],
+      "answer": 0,
+      "explanation": "Layer 4 works on TCP connections; layer 7 understands HTTP."
+    },
+    {
+      "id": "san",
+      "question": "In a TLS certificate, what is the SAN?",
+      "options": [
+        "The names the certificate is valid for",
+        "The certificate's expiry date",
+        "The authority that signed it",
+        "The server's private key"
+      ],
+      "answer": 0
+    }
+  ]
+}

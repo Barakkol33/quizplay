@@ -1,0 +1,31 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "order",
+  "title": "From kubectl to a running container",
+  "settings": { "lives": 0 },
+  "questions": [
+    {
+      "id": "create-deployment",
+      "prompt": "kubectl create deployment web --image=nginx: what happens, in order?",
+      "items": [
+        "kubectl sends the request to the API server",
+        "The API server stores the desired state in etcd",
+        "The Deployment controller creates a ReplicaSet",
+        "The ReplicaSet controller creates Pod objects",
+        "The scheduler assigns each Pod to a node",
+        "The kubelet pulls the image and starts the container"
+      ],
+      "explanation": "This chain, from desired state to running container, is the heart of Kubernetes."
+    },
+    {
+      "id": "rollout",
+      "prompt": "A rolling update with kubectl: put the commands in order.",
+      "items": [
+        "kubectl apply -f web.yaml",
+        "kubectl set image deployment/web web=nginx:1.28",
+        "kubectl rollout status deployment/web",
+        "kubectl rollout undo deployment/web"
+      ]
+    }
+  ]
+}

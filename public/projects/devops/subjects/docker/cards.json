@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "flashcards",
+  "title": "Docker commands",
+  "settings": { "lives": 0 },
+  "questions": [
+    { "id": "run-throwaway", "front": "Start a throwaway container with a shell, deleted on exit", "back": "docker run --rm -it alpine:3.20 sh" },
+    { "id": "ps-all", "front": "List all containers, including stopped ones", "back": "docker ps -a" },
+    { "id": "logs-follow", "front": "Follow a container's output", "back": "docker logs -f web" },
+    { "id": "exec-shell", "front": "Open a shell inside a running container", "back": "docker exec -it web sh" },
+    { "id": "history", "front": "See an image's layers and how much each one added", "back": "docker history myapp:dev" },
+    { "id": "inspect", "front": "Everything about a container as JSON: exit code, mounts, networks", "back": "docker inspect web" },
+    { "id": "stats", "front": "CPU and memory per container, once", "back": "docker stats --no-stream" },
+    { "id": "compose-down", "front": "Stop and remove a Compose app, and delete its volumes", "back": "docker compose down -v" }
+  ]
+}

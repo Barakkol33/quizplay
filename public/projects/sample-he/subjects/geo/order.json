@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "order",
+  "title": "מהגדול לקטן",
+  "questions": [
+    { "id": "oceans", "prompt": "סדרו את האוקיינוסים מהגדול לקטן", "items": ["השקט", "האטלנטי", "ההודי", "הקרח הצפוני"] }
+  ]
+}

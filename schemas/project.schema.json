@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://barakkol33.github.io/quizplay/schemas/project.schema.json",
+  "title": "quizplay project",
+  "type": "object",
+  "required": ["id", "title", "lang", "subjects"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "$ref": "#/definitions/id", "description": "Unique project id. Used in URLs and to store progress, so don't change it later." },
+    "title": { "type": "string", "minLength": 1 },
+    "lang": { "enum": ["he", "en"], "description": "he = right-to-left, en = left-to-right" },
+    "description": { "type": "string" },
+    "subjects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "games"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "#/definitions/id" },
+          "title": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "games": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "title", "type", "file"],
+              "additionalProperties": false,
+              "properties": {
+                "id": { "$ref": "#/definitions/id", "description": "Unique within the whole project." },
+                "title": { "type": "string", "minLength": 1 },
+                "type": { "enum": ["mcq", "truefalse", "typein", "match", "order", "flashcards"] },
+                "file": { "type": "string", "pattern": "\\.json$", "description": "Path of the game file, relative to project.json" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "Lowercase letters, digits and dashes" }
+  }
+}

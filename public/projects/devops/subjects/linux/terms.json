@@ -1,0 +1,76 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "Linux terms",
+  "settings": { "lives": 3 },
+  "questions": [
+    {
+      "id": "exit-code",
+      "question": "A command finished with exit code 0. What does that mean?",
+      "options": ["It succeeded", "It failed", "It is still running", "It was killed by the kernel"],
+      "answer": 0,
+      "explanation": "0 is success, anything else is failure. Scripts and pipelines decide by the exit code."
+    },
+    {
+      "id": "pipe",
+      "question": "What does the pipe | do?",
+      "options": [
+        "Sends the output of one command to the input of the next",
+        "Runs two commands at the same time on different CPUs",
+        "Writes the output to a file",
+        "Runs the next command only if the first one failed"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "stderr",
+      "question": "Where does a program write its error messages?",
+      "options": ["stderr", "stdin", "stdout", "/var/log/errors"],
+      "answer": 0,
+      "explanation": "Programs read from stdin, write output to stdout, and errors to stderr. 2>/dev/null hides stderr."
+    },
+    {
+      "id": "path",
+      "question": "What is PATH?",
+      "options": [
+        "The directories the shell searches for a command",
+        "The current directory",
+        "The home directory of the user",
+        "The location of the shell's history file"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alpine-pkg",
+      "question": "Alpine Linux, common in containers, installs packages with…",
+      "options": ["apk", "apt", "dnf", "brew"],
+      "answer": 0,
+      "explanation": "Ubuntu and Debian use apt, RHEL/Rocky/Fedora use dnf, Alpine uses apk."
+    },
+    {
+      "id": "sudo",
+      "question": "What does sudo do?",
+      "options": ["Runs one command as root", "Switches to another shell", "Shows who is logged in", "Lists running processes"],
+      "answer": 0
+    },
+    {
+      "id": "everything-file",
+      "question": "\"Everything is a file\" in Linux. Which of these is shown as files under /proc?",
+      "options": ["Running processes", "Network packets in flight", "Installed packages", "DNS records"],
+      "answer": 0
+    },
+    {
+      "id": "count-pattern",
+      "question": "Which pipeline counts each distinct value in a list, biggest first?",
+      "options": ["sort | uniq -c | sort -rn", "uniq | sort -n", "grep -c | sort", "wc -l | sort -r"],
+      "answer": 0,
+      "explanation": "uniq only collapses adjacent lines, so sort first. -c counts, and sort -rn puts the biggest count on top."
+    },
+    {
+      "id": "awk-field",
+      "question": "In an access log line, the status code is field 9. Which command prints only the status codes?",
+      "options": ["awk '{print $9}' access.log", "grep 9 access.log", "cut -c 9 access.log", "head -9 access.log"],
+      "answer": 0
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "Docker quiz",
+  "settings": { "lives": 3, "timeLimit": 30 },
+  "questions": [
+    {
+      "id": "image-vs-container",
+      "question": "What is a container?",
+      "options": ["A running instance of an image", "A read-only package of an app", "A small virtual machine with its own kernel", "A server that stores images"],
+      "answer": 0
+    },
+    {
+      "id": "exit-137",
+      "question": "A container exits with code 137. What happened?",
+      "options": [
+        "It was killed with SIGKILL, usually for going over its memory limit",
+        "The image was not found",
+        "The port was already in use",
+        "It finished successfully"
+      ],
+      "answer": 0,
+      "explanation": "137 = 128 + 9: signal 9 (SIGKILL) from the kernel. In Kubernetes the same thing shows as OOMKilled."
+    },
+    {
+      "id": "latest-tag",
+      "question": "What does the tag latest mean?",
+      "options": ["Only the default tag, not necessarily the newest", "Always the newest build", "The last image you pulled", "The digest of the image"],
+      "answer": 0
+    },
+    {
+      "id": "digest",
+      "question": "How is a digest (sha256:…) different from a tag?",
+      "options": ["It never moves: it is the ID of the content", "It is shorter", "It is only for private registries", "It points to the latest version"],
+      "answer": 0
+    },
+    {
+      "id": "limits",
+      "question": "Which kernel feature limits a container's CPU and memory?",
+      "options": ["cgroups", "Namespaces", "OverlayFS", "iptables"],
+      "answer": 0,
+      "explanation": "Namespaces give the container its own view; cgroups set the limits; OverlayFS gives the layered filesystem."
+    },
+    {
+      "id": "publish-local",
+      "question": "-p 127.0.0.1:8088:80 publishes container port 80. Who can reach it?",
+      "options": ["Only this machine, on port 8088", "The whole network, on port 80", "Other containers only", "Nobody until you run docker expose"],
+      "answer": 0,
+      "explanation": "-p HOST:CONTAINER. Without the 127.0.0.1 in front, the port is open to the whole network."
+    },
+    {
+      "id": "localhost-container",
+      "question": "Inside a container, what is localhost?",
+      "options": ["The container itself", "The host machine", "The first container on the network", "The Docker DNS server"],
+      "answer": 0
+    },
+    {
+      "id": "find-by-name",
+      "question": "On a network you created, how does one container reach another?",
+      "options": ["By its container name: Docker runs a DNS server", "Only by IP address", "Through localhost", "Only through a published port on the host"],
+      "answer": 0
+    },
+    {
+      "id": "lost-data",
+      "question": "A container wrote files outside any volume, then it was removed. The files are…",
+      "options": ["Gone", "Saved in the image", "Moved to a default volume", "Kept until the host reboots"],
+      "answer": 0
+    }
+  ]
+}

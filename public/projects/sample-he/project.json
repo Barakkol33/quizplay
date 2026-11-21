@@ -1,0 +1,27 @@
+{
+  "$schema": "../../../schemas/project.schema.json",
+  "id": "sample-he",
+  "title": "דוגמה: מדע וגאוגרפיה",
+  "lang": "he",
+  "description": "פרויקט קטן בעברית שמראה את כל סוגי המשחקים",
+  "subjects": [
+    {
+      "id": "science",
+      "title": "מדע",
+      "games": [
+        { "id": "sci-mcq", "title": "חידון מדע", "type": "mcq", "file": "subjects/science/mcq.json" },
+        { "id": "sci-tf", "title": "נכון או לא נכון", "type": "truefalse", "file": "subjects/science/tf.json" }
+      ]
+    },
+    {
+      "id": "geo",
+      "title": "גאוגרפיה",
+      "games": [
+        { "id": "geo-capitals", "title": "בירות", "type": "typein", "file": "subjects/geo/capitals.json" },
+        { "id": "geo-match", "title": "ארץ ויבשת", "type": "match", "file": "subjects/geo/match.json" },
+        { "id": "geo-order", "title": "מהגדול לקטן", "type": "order", "file": "subjects/geo/order.json" },
+        { "id": "geo-cards", "title": "כרטיסיות", "type": "flashcards", "file": "subjects/geo/cards.json" }
+      ]
+    }
+  ]
+}

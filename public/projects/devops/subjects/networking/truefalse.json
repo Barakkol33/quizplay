@@ -1,0 +1,47 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "truefalse",
+  "title": "True or false",
+  "settings": { "lives": 3 },
+  "questions": [
+    {
+      "id": "refused-firewall",
+      "statement": "\"Connection refused\" usually means a firewall dropped the traffic.",
+      "answer": false,
+      "explanation": "Refused means the machine answered but nothing listens on that port. A firewall that drops traffic makes the connection hang."
+    },
+    {
+      "id": "5xx-network",
+      "statement": "If DNS, TCP and TLS all work and the server returns 5xx, the network is fine and the application is broken.",
+      "answer": true
+    },
+    {
+      "id": "https-tls",
+      "statement": "HTTPS is HTTP inside TLS.",
+      "answer": true
+    },
+    {
+      "id": "private-subnet",
+      "statement": "Machines in a private subnet can reach the internet directly.",
+      "answer": false,
+      "explanation": "Public subnets can reach the internet directly; private ones go through NAT or not at all."
+    },
+    {
+      "id": "dig-hosts",
+      "statement": "dig reads /etc/hosts before asking the DNS server.",
+      "answer": false,
+      "explanation": "dig asks the DNS server directly. Programs use the resolver library, which also reads /etc/hosts. getent hosts shows what programs really get."
+    },
+    {
+      "id": "bastion",
+      "statement": "A bastion (jump host) is the one machine reachable from outside, through which you reach the private ones.",
+      "answer": true
+    },
+    {
+      "id": "drop-reject",
+      "statement": "A firewall rule with REJECT says nothing back, while DROP answers \"refused\".",
+      "answer": false,
+      "explanation": "It is the other way around: DROP says nothing, REJECT answers refused."
+    }
+  ]
+}

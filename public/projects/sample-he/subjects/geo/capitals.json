@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "typein",
+  "title": "בירות",
+  "instructions": "כתבו את שם עיר הבירה.",
+  "questions": [
+    { "id": "france", "question": "מה בירת צרפת?", "answers": ["פריז", "פאריס", "Paris"] },
+    { "id": "japan", "question": "מה בירת יפן?", "answers": ["טוקיו", "Tokyo"] },
+    { "id": "italy", "question": "מה בירת איטליה?", "answers": ["רומא", "Rome"] }
+  ]
+}

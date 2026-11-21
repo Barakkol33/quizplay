@@ -1,0 +1,118 @@
+# Writing a project for quizplay
+
+A project is a folder of JSON files: one `project.json` that lists the subjects and games, and one file per game with its questions. Send it as a **zip of the folder**.
+
+```
+my-project/
+  project.json
+  subjects/
+    basics/
+      quiz.json
+      words.json
+  assets/              (optional images)
+    diagram.png
+```
+
+You can test your zip before sending it: open the site, choose **Load a project**, and upload it. Problems in the files are listed there.
+
+## project.json
+
+```json
+{
+  "$schema": "https://barakkol33.github.io/quizplay/schemas/project.schema.json",
+  "id": "my-project",
+  "title": "My project",
+  "lang": "en",
+  "description": "One line about it",
+  "subjects": [
+    {
+      "id": "basics",
+      "title": "The basics",
+      "games": [
+        { "id": "basics-quiz", "title": "Quiz", "type": "mcq", "file": "subjects/basics/quiz.json" },
+        { "id": "basics-words", "title": "Words", "type": "match", "file": "subjects/basics/words.json" }
+      ]
+    }
+  ]
+}
+```
+
+- `id`: lowercase letters, digits and dashes. **Don't change ids after people start playing**, because progress and mistakes are saved by id.
+- `lang`: `"he"` (right to left) or `"en"` (left to right).
+- Game `id`s must be unique in the whole project.
+
+## A game file
+
+```json
+{
+  "$schema": "https://barakkol33.github.io/quizplay/schemas/game.schema.json",
+  "type": "mcq",
+  "title": "Quiz",
+  "instructions": "Optional text shown above the questions",
+  "settings": { "lives": 3, "timeLimit": 0, "count": 10 },
+  "questions": [ ... ]
+}
+```
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `lives` | Hearts per round. `0` = unlimited | 3 |
+| `timeLimit` | Seconds per question. `0` = no timer | 0 |
+| `count` | Ask only this many questions per round (picked at random) | all |
+| `shuffle` | Shuffle question order | true |
+| `shuffleOptions` | Multiple choice: shuffle the options | true |
+
+Every question needs an `id`, unique in its game. Any question can have an `explanation` (shown after the answer) and an `image` (a path relative to `project.json`, or a full URL).
+
+## Question shapes, by game type
+
+**`mcq`: multiple choice.** `answer` is the index of the correct option, counting from 0. The options are shuffled, so you can always put the correct one first.
+```json
+{ "id": "q1", "question": "2 + 2 = ?", "options": ["4", "3", "5", "22"], "answer": 0, "explanation": "Two pairs." }
+```
+
+**`truefalse`**
+```json
+{ "id": "q1", "statement": "The sun is a star.", "answer": true }
+```
+
+**`typein`: type the answer.** List every accepted answer. Case, Hebrew niqqud and punctuation are ignored. The first answer is the one shown as correct.
+```json
+{ "id": "q1", "question": "Capital of France?", "answers": ["Paris", "פריז"] }
+```
+
+**`match`: match pairs.** One question = one board of pairs. It counts as correct only with no wrong tries.
+```json
+{ "id": "q1", "prompt": "Match the word to its meaning", "pairs": [["big", "large"], ["fast", "quick"], ["old", "aged"]] }
+```
+
+**`order`: put in order.** Write the items in the correct order; the game shuffles them.
+```json
+{ "id": "q1", "prompt": "From smallest to largest", "items": ["atom", "cell", "organ", "body"] }
+```
+
+**`flashcards`**: the player flips the card and says whether they knew it.
+```json
+{ "id": "q1", "front": "Mitochondria", "back": "The part of the cell that makes energy" }
+```
+
+## Checking your files
+
+With Node installed, in this repo:
+
+```
+npm install
+npm run validate -- path/to/my-project.zip
+```
+
+The `$schema` line at the top of each file makes editors like VS Code show errors and autocomplete as you type.
+
+## Getting it on the site
+
+Built-in projects live in `public/projects/<id>/` and are listed in `public/projects/index.json`:
+
+```json
+{ "id": "my-project", "title": "My project", "lang": "en", "path": "my-project/", "description": "…" }
+```
+
+A project hosted anywhere else (another GitHub Pages site, a raw GitHub folder) can also be opened from **Load a project → From a link**, and the site remembers it.

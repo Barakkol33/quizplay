@@ -1,0 +1,73 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "Architecture quiz",
+  "settings": { "lives": 3 },
+  "questions": [
+    {
+      "id": "declarative",
+      "question": "What is the core idea of Kubernetes management?",
+      "options": [
+        "Declarative: describe the desired state, and Kubernetes keeps matching reality to it",
+        "Imperative: run one command per change, in order",
+        "Manual: an operator restarts failed containers",
+        "Scheduled: changes apply once a night"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "etcd",
+      "question": "Where does Kubernetes store all cluster state?",
+      "options": ["etcd", "kubelet", "The container registry", "kube-proxy"],
+      "answer": 0
+    },
+    {
+      "id": "scheduler",
+      "question": "A new Pod has no node yet. Which component picks one?",
+      "options": ["kube-scheduler", "kube-apiserver", "kubelet", "etcd"],
+      "answer": 0
+    },
+    {
+      "id": "kubelet",
+      "question": "Which component runs on every node and makes sure its assigned pods are running?",
+      "options": ["kubelet", "kube-controller-manager", "kube-scheduler", "kind"],
+      "answer": 0
+    },
+    {
+      "id": "apiserver",
+      "question": "Every kubectl command first talks to…",
+      "options": ["kube-apiserver", "etcd", "The node's kubelet", "The CNI plugin"],
+      "answer": 0
+    },
+    {
+      "id": "kube-proxy",
+      "question": "What does kube-proxy do?",
+      "options": [
+        "Sets up rules so traffic to a Service reaches the right pods",
+        "Pulls images for the kubelet",
+        "Stores Secrets",
+        "Exposes the cluster to the internet"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "runtime",
+      "question": "Which container runtime does Kubernetes usually use?",
+      "options": ["containerd", "Docker Desktop", "systemd", "VirtualBox"],
+      "answer": 0
+    },
+    {
+      "id": "kind",
+      "question": "What is kind?",
+      "options": ["A tool that runs a Kubernetes cluster inside Docker containers", "A managed cloud Kubernetes", "A Kubernetes YAML linter", "The Kubernetes package manager"],
+      "answer": 0
+    },
+    {
+      "id": "readiness",
+      "question": "In a rolling update, what stops a broken new version from getting traffic?",
+      "options": ["The readiness probe", "The liveness probe", "The image tag", "The namespace"],
+      "answer": 0,
+      "explanation": "Traffic arrives only when the readiness probe passes. A new pod that never becomes ready stops the rollout, and the old pods keep serving."
+    }
+  ]
+}

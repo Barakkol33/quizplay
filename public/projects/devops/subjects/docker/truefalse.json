@@ -1,0 +1,46 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "truefalse",
+  "title": "Container myths",
+  "settings": { "lives": 3 },
+  "questions": [
+    {
+      "id": "small-vm",
+      "statement": "A container is a small virtual machine with its own kernel.",
+      "answer": false,
+      "explanation": "A container is a process on the host's kernel that the kernel isolates. A VM has its own kernel on emulated hardware."
+    },
+    {
+      "id": "shared-layers",
+      "statement": "Many containers of the same image share its layers on disk.",
+      "answer": true
+    },
+    {
+      "id": "lives-with-process",
+      "statement": "A container lives as long as its main process.",
+      "answer": true
+    },
+    {
+      "id": "k8s-uses-docker",
+      "statement": "Kubernetes uses Docker itself to run containers.",
+      "answer": false,
+      "explanation": "Kubernetes uses containerd, but it runs exactly the images that docker build makes."
+    },
+    {
+      "id": "copy-context",
+      "statement": "COPY in a Dockerfile can only take files from the build context.",
+      "answer": true
+    },
+    {
+      "id": "root-safe",
+      "statement": "Running as root inside a container is safe because the container is isolated.",
+      "answer": false,
+      "explanation": "All containers share one kernel. Root in a container, with the wrong settings, is close to root on the host."
+    },
+    {
+      "id": "stop-signal",
+      "statement": "docker stop sends SIGTERM, then SIGKILL after 10 seconds.",
+      "answer": true
+    }
+  ]
+}

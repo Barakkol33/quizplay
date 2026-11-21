@@ -1,0 +1,38 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "match",
+  "title": "Deployment strategies",
+  "settings": { "lives": 0 },
+  "questions": [
+    {
+      "id": "strategies",
+      "prompt": "Match each strategy to how it works",
+      "pairs": [
+        ["Recreate", "Stop the old version, start the new: downtime"],
+        ["Rolling update", "Replace instances a few at a time"],
+        ["Blue-green", "Run both, switch all traffic at once"],
+        ["Canary", "A small share of traffic first, then grow it"]
+      ]
+    },
+    {
+      "id": "rollback-speed",
+      "prompt": "Match each strategy to its rollback",
+      "pairs": [
+        ["Recreate", "Slow: redeploy"],
+        ["Rolling update", "Medium: roll back gradually"],
+        ["Blue-green", "Instant: switch back"],
+        ["Canary", "Fast: shift the traffic back"]
+      ]
+    },
+    {
+      "id": "git-words",
+      "prompt": "Git terms",
+      "pairs": [
+        ["Tag", "A fixed name for one commit, used for releases"],
+        ["Branch", "A movable name that points at a commit"],
+        ["Remote", "A copy of the repository on a server"],
+        ["Conflict", "Two changes to the same lines"]
+      ]
+    }
+  ]
+}

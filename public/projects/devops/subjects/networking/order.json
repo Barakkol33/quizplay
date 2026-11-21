@@ -1,0 +1,24 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "order",
+  "title": "Debug a request, step by step",
+  "settings": { "lives": 0, "shuffle": false },
+  "questions": [
+    {
+      "id": "request-steps",
+      "prompt": "curl https://example.com: put the steps in the order they happen.",
+      "items": [
+        "DNS: turn the name into an address",
+        "TCP: connect to the port",
+        "TLS: check who is on the other side",
+        "HTTP: send the request, read the status"
+      ],
+      "explanation": "Each step has its own tool: dig, nc -vz, openssl s_client, curl -v."
+    },
+    {
+      "id": "tools-steps",
+      "prompt": "Put the tools in the order you would use them to debug the request.",
+      "items": ["dig +short example.com", "nc -vz example.com 443", "openssl s_client -connect example.com:443", "curl -v https://example.com"]
+    }
+  ]
+}

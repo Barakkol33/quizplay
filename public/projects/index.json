@@ -1,0 +1,16 @@
+[
+  {
+    "id": "devops",
+    "title": "DevOps fundamentals",
+    "lang": "en",
+    "path": "devops/",
+    "description": "Linux, networking, Docker, Kubernetes and delivery. Based on the blearning DevOps guide."
+  },
+  {
+    "id": "sample-he",
+    "title": "דוגמה: מדע וגאוגרפיה",
+    "lang": "he",
+    "path": "sample-he/",
+    "description": "פרויקט קטן בעברית שמראה את כל סוגי המשחקים"
+  }
+]

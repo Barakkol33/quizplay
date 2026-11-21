@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "flashcards",
+  "title": "כרטיסיות",
+  "questions": [
+    { "id": "everest", "front": "ההר הגבוה בעולם", "back": "האוורסט, 8,849 מטר" },
+    { "id": "nile", "front": "אחד הנהרות הארוכים בעולם, באפריקה", "back": "הנילוס" },
+    { "id": "dead-sea", "front": "המקום הנמוך ביותר על פני היבשה", "back": "ים המלח" }
+  ]
+}

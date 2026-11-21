@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "match",
+  "title": "Components",
+  "settings": { "lives": 0 },
+  "questions": [
+    {
+      "id": "control-plane",
+      "prompt": "Control plane: match each component to its job",
+      "pairs": [
+        ["kube-apiserver", "The front door: validates every request"],
+        ["etcd", "Key-value store of all cluster state"],
+        ["kube-scheduler", "Picks a node for each new Pod"],
+        ["kube-controller-manager", "Runs controllers that reconcile state"]
+      ]
+    },
+    {
+      "id": "node",
+      "prompt": "Nodes: match each component to its job",
+      "pairs": [
+        ["kubelet", "Node agent that keeps assigned pods running"],
+        ["containerd", "Actually runs the containers"],
+        ["kube-proxy", "Routes Service traffic to pods"],
+        ["CNI plugin", "Pod-to-pod networking"]
+      ]
+    }
+  ]
+}

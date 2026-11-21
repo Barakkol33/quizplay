@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://barakkol33.github.io/quizplay/schemas/game.schema.json",
+  "title": "quizplay game",
+  "type": "object",
+  "required": ["type", "questions"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "type": { "enum": ["mcq", "truefalse", "typein", "match", "order", "flashcards"] },
+    "title": { "type": "string" },
+    "instructions": { "type": "string", "description": "Shown above the questions" },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lives": { "type": "integer", "minimum": 0, "description": "Hearts per round. 0 = unlimited. Default 3" },
+        "timeLimit": { "type": "number", "minimum": 0, "description": "Seconds per question. 0 = no timer" },
+        "shuffle": { "type": "boolean", "description": "Shuffle question order. Default true" },
+        "count": { "type": "integer", "minimum": 1, "description": "Ask only this many questions per round" },
+        "shuffleOptions": { "type": "boolean", "description": "mcq: shuffle the options. Default true" }
+      }
+    },
+    "questions": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/base" } }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    { "if": { "properties": { "type": { "const": "mcq" } } }, "then": { "properties": { "questions": { "items": { "$ref": "#/definitions/mcq" } } } } },
+    { "if": { "properties": { "type": { "const": "truefalse" } } }, "then": { "properties": { "questions": { "items": { "$ref": "#/definitions/truefalse" } } } } },
+    { "if": { "properties": { "type": { "const": "typein" } } }, "then": { "properties": { "questions": { "items": { "$ref": "#/definitions/typein" } } } } },
+    { "if": { "properties": { "type": { "const": "match" } } }, "then": { "properties": { "questions": { "items": { "$ref": "#/definitions/match" } } } } },
+    { "if": { "properties": { "type": { "const": "order" } } }, "then": { "properties": { "questions": { "items": { "$ref": "#/definitions/order" } } } } },
+    { "if": { "properties": { "type": { "const": "flashcards" } } }, "then": { "properties": { "questions": { "items": { "$ref": "#/definitions/flashcards" } } } } }
+  ],
+  "definitions": {
+    "text": { "type": "string", "minLength": 1 },
+    "base": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$", "description": "Unique within the game. Mistakes are tracked by it, so don't change it later." },
+        "explanation": { "type": "string", "description": "Shown after the answer" },
+        "image": { "type": "string", "description": "Image path relative to project.json, or a full URL" }
+      }
+    },
+    "mcq": {
+      "required": ["question", "options", "answer"],
+      "properties": {
+        "question": { "$ref": "#/definitions/text" },
+        "options": { "type": "array", "minItems": 2, "items": { "$ref": "#/definitions/text" } },
+        "answer": { "type": "integer", "minimum": 0, "description": "Index (from 0) of the correct option" }
+      }
+    },
+    "truefalse": {
+      "required": ["statement", "answer"],
+      "properties": { "statement": { "$ref": "#/definitions/text" }, "answer": { "type": "boolean" } }
+    },
+    "typein": {
+      "required": ["question", "answers"],
+      "properties": {
+        "question": { "$ref": "#/definitions/text" },
+        "answers": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/text" }, "description": "All accepted answers. Case, niqqud and punctuation are ignored. The first one is shown as the correct answer" }
+      }
+    },
+    "match": {
+      "required": ["pairs"],
+      "properties": {
+        "prompt": { "type": "string" },
+        "pairs": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/definitions/text" } }
+        }
+      }
+    },
+    "order": {
+      "required": ["items"],
+      "properties": {
+        "prompt": { "type": "string" },
+        "items": { "type": "array", "minItems": 2, "items": { "$ref": "#/definitions/text" }, "description": "In the correct order. The game shuffles them" }
+      }
+    },
+    "flashcards": {
+      "required": ["front", "back"],
+      "properties": { "front": { "$ref": "#/definitions/text" }, "back": { "$ref": "#/definitions/text" } }
+    }
+  }
+}

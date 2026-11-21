@@ -1,0 +1,17 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "חידון מדע",
+  "questions": [
+    { "id": "water", "question": "מה הנוסחה הכימית של מים?", "options": ["H₂O", "CO₂", "O₂", "NaCl"], "answer": 0 },
+    { "id": "planet", "question": "איזה כוכב לכת הוא הגדול ביותר במערכת השמש?", "options": ["צדק", "שבתאי", "כדור הארץ", "מאדים"], "answer": 0 },
+    { "id": "boil", "question": "באיזו טמפרטורה רותחים מים בגובה פני הים?", "options": ["100°C", "90°C", "50°C", "120°C"], "answer": 0 },
+    {
+      "id": "photosynthesis",
+      "question": "איזה גז צמחים קולטים בפוטוסינתזה?",
+      "options": ["פחמן דו־חמצני", "חמצן", "חנקן", "מימן"],
+      "answer": 0,
+      "explanation": "הצמח קולט פחמן דו־חמצני ומשחרר חמצן."
+    }
+  ]
+}

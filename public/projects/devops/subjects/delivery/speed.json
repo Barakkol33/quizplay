@@ -1,0 +1,34 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "truefalse",
+  "title": "Speed round",
+  "instructions": "10 seconds per question. Keys: 1 = true, 2 = false.",
+  "settings": { "lives": 3, "timeLimit": 10 },
+  "questions": [
+    { "id": "rolling-default", "statement": "Rolling update is the default strategy in Kubernetes.", "answer": true },
+    { "id": "blue-green-cost", "statement": "Blue-green needs double resources for a while.", "answer": true },
+    { "id": "flags-deploy", "statement": "A feature flag turns a feature on or off without a deployment.", "answer": true },
+    {
+      "id": "deploy-release",
+      "statement": "Deploy and release mean the same thing.",
+      "answer": false,
+      "explanation": "Deploy: the code runs in production. Release: users get the feature. Flags separate the two."
+    },
+    {
+      "id": "long-branches",
+      "statement": "The longer a branch lives, the easier the merge.",
+      "answer": false
+    },
+    {
+      "id": "pr-tests-only",
+      "statement": "In the sample pipeline, a pull request runs only the tests; a merge to main also builds and pushes the image.",
+      "answer": true
+    },
+    {
+      "id": "gitignore-secrets",
+      "statement": ".gitignore is where you list secrets you want Git to encrypt.",
+      "answer": false,
+      "explanation": ".gitignore lists files Git should not track at all. Secrets should never be committed."
+    }
+  ]
+}

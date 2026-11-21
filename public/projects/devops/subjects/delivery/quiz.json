@@ -1,0 +1,89 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "Delivery quiz",
+  "settings": { "lives": 3 },
+  "questions": [
+    {
+      "id": "revert",
+      "question": "A bad commit reached main, a shared branch. What is the safe way to undo it?",
+      "options": ["git revert: a new commit that undoes it", "git reset --hard and force-push", "Delete the branch", "git rebase -i to drop it"],
+      "answer": 0,
+      "explanation": "Revert keeps history, so it is safe on shared branches."
+    },
+    {
+      "id": "rebase",
+      "question": "What does git rebase do?",
+      "options": [
+        "Replays your commits on top of another branch, rewriting them",
+        "Creates a merge commit",
+        "Undoes the last commit",
+        "Downloads new commits"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "pull-request",
+      "question": "A pull request is a feature of…",
+      "options": ["The hosting platform, not of Git", "Git itself", "The CI runner", "The container registry"],
+      "answer": 0
+    },
+    {
+      "id": "trunk",
+      "question": "Which branching model does the delivery research recommend?",
+      "options": ["Trunk-based: short branches merged to main many times a day", "Git flow with long-lived develop and release branches", "One branch per developer", "A branch per environment"],
+      "answer": 0
+    },
+    {
+      "id": "cd-vs-cd",
+      "question": "Continuous delivery vs continuous deployment: what is the difference?",
+      "options": [
+        "Delivery keeps one manual approval before release; deployment has none",
+        "Deployment needs a manual approval; delivery does not",
+        "They are two names for the same thing",
+        "Delivery is for libraries, deployment is for services"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "build-once",
+      "question": "\"Build once, deploy many\" means…",
+      "options": [
+        "The same artifact goes through every environment; only configuration changes",
+        "Each environment builds its own image",
+        "You build once a day",
+        "Each developer builds locally and pushes"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "tag-sha",
+      "question": "Why tag a container image with the commit hash?",
+      "options": [
+        "Every running version points back to its exact code",
+        "Registries require it",
+        "It makes the image smaller",
+        "So that latest is updated"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "canary",
+      "question": "Which strategy sends a small share of traffic to the new version, then grows it?",
+      "options": ["Canary", "Blue-green", "Recreate", "Rolling update"],
+      "answer": 0
+    },
+    {
+      "id": "expand-contract",
+      "question": "How do you rename a database column without downtime?",
+      "options": [
+        "Expand and contract: backward-compatible steps, so old and new code both work",
+        "Rename it during a maintenance window",
+        "Roll back the code if it fails",
+        "Use a feature flag on the column"
+      ],
+      "answer": 0,
+      "explanation": "Code can go back in seconds. Data cannot."
+    }
+  ]
+}

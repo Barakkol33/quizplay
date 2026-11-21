@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "typein",
+  "title": "Which command?",
+  "instructions": "Type the command name only, without options.",
+  "settings": { "lives": 3 },
+  "questions": [
+    { "id": "where-am-i", "question": "Print the directory you are in.", "answers": ["pwd"] },
+    { "id": "follow-log", "question": "Follow a log file in real time (with -f).", "answers": ["tail", "tail -f"] },
+    { "id": "search-text", "question": "Find lines that contain \"error\" in app.log.", "answers": ["grep"] },
+    { "id": "find-files", "question": "Find all *.yaml files under the current directory.", "answers": ["find"] },
+    { "id": "where-binary", "question": "Where is the kubectl binary on this machine?", "answers": ["which", "which kubectl", "command -v", "type"] },
+    { "id": "count-lines", "question": "Count the lines in a file.", "answers": ["wc", "wc -l"] },
+    { "id": "scroll-file", "question": "Open a big file in a scrollable viewer (q to quit).", "answers": ["less", "more"] },
+    {
+      "id": "symlink",
+      "question": "Create a symbolic link (with -s).",
+      "answers": ["ln", "ln -s"],
+      "explanation": "ln -s /path/to/target link"
+    }
+  ]
+}
