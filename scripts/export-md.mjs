@@ -4,7 +4,7 @@
 //   npm run export-md -- <project>  [-o out.md] [--code-lang java]
 //
 // <project> is a project id under public/projects/, a project folder,
-// a project.json file, or a .zip. Output defaults to exports/<project-id>.md (git-ignored).
+// a project.json file, or a .zip. Output defaults to exports/<project-id>.md.
 import fs from 'node:fs';
 import path from 'node:path';
 import JSZip from 'jszip';
@@ -197,7 +197,7 @@ const head = [
   '',
 ];
 
-const outFile = outArg ?? path.join('exports', `${project.id}.md`); // exports/ is git-ignored
+const outFile = outArg ?? path.join('exports', `${project.id}.md`); // committed, so reviewers can read it on GitHub
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
 fs.writeFileSync(outFile, [...head, ...body].join('\n').replace(/\n{3,}/g, '\n\n'));
 console.log(`wrote ${outFile}: ${project.subjects.length} subjects, ${total} questions`);
