@@ -18,6 +18,7 @@ async function route(): Promise<void> {
     else if (a === 'play' && b && c) await s.renderPlay(root, b, c);
     else if (a === 'mistakes' && b) await s.renderMistakes(root, b);
     else if (a === 'review' && b) await s.renderReview(root, b);
+    else if (a === 'mix' && b) await s.renderMixed(root, b, c);
     else if (a === 'load') await s.renderLoad(root);
     else if (a === 'profile') s.renderProfile(root);
     else if (a === 'about') s.renderAbout(root, b === 'ai');

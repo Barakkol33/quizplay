@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "multi",
+  "title": "Select all that apply",
+  "settings": { "lives": 3 },
+  "questions": [
+    {
+      "id": "control-plane",
+      "question": "Which components are part of the control plane?",
+      "options": ["kube-apiserver", "etcd", "kube-scheduler", "kubelet", "kube-proxy"],
+      "answers": [0, 1, 2],
+      "explanation": "kubelet and kube-proxy run on every node."
+    },
+    {
+      "id": "node",
+      "question": "Which run on every node?",
+      "options": ["kubelet", "container runtime", "kube-proxy", "etcd", "kube-controller-manager"],
+      "answers": [0, 1, 2]
+    },
+    {
+      "id": "solves",
+      "question": "Which problems does Kubernetes solve compared with Docker on one machine?",
+      "options": ["Restarting work on another node when a machine dies", "Scaling to more copies", "Rolling updates", "Writing the application code", "Choosing the programming language"],
+      "answers": [0, 1, 2]
+    },
+    {
+      "id": "rollout-safe",
+      "question": "In a rolling update with maxUnavailable: 0 and a readiness probe, what is true?",
+      "options": ["Traffic reaches a new pod only when its readiness probe passes", "A new pod that never becomes ready stops the rollout", "The old pods keep serving meanwhile", "All old pods are stopped first"],
+      "answers": [0, 1, 2]
+    }
+  ]
+}

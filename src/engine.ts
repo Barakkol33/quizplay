@@ -82,8 +82,9 @@ export function playRound(root: HTMLElement, items: RoundItem[], opts: RoundOpti
     (progress.firstChild as HTMLElement).style.width = `${(idx / items.length) * 100}%`;
   };
 
+  const allPassive = items.length > 0 && items.every((i) => i.type.passive);
   clear(root).append(
-    h('div', { class: 'play' },
+    h('div', { class: 'play' + (allPassive ? ' passive' : '') },
       h('div', { class: 'hud' }, h('strong', { class: 'hud-title', dir: 'auto' }, opts.title), hearts, streakEl, scoreEl),
       progress,
       timeBar,
@@ -116,6 +117,16 @@ export function playRound(root: HTMLElement, items: RoundItem[], opts: RoundOpti
       answered = true;
       stopTimer();
       keyHandler = null;
+      if (item.type.passive) {
+        correct++;
+        idx++;
+        if (idx >= items.length) finish(false);
+        else {
+          show();
+          window.scrollTo({ top: 0 });
+        }
+        return;
+      }
       body.classList.add('locked');
       store.recordAnswer(item.pid, item.gid, item.q.id, right, given);
       if (right) {

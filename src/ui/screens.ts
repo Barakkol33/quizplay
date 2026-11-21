@@ -5,7 +5,7 @@ import { playRound, type RoundItem, type RoundResult } from '../engine';
 import { gameTypes } from '../games';
 import * as store from '../store';
 import * as projects from '../projects';
-import type { Lang, Project } from '../types';
+import type { GameRef, Lang, Project } from '../types';
 import { AI_PROMPT, aboutContent } from './about';
 
 const enc = encodeURIComponent;
@@ -18,6 +18,7 @@ export const link = {
   review: (pid: string) => `#/review/${enc(pid)}`,
   load: '#/load',
   profile: '#/profile',
+  mix: (pid: string, sid?: string) => `#/mix/${enc(pid)}${sid ? '/' + enc(sid) : ''}`,
   about: '#/about',
   aboutAi: '#/about/ai',
 };
@@ -175,7 +176,10 @@ export async function renderProject(root: HTMLElement, pid: string): Promise<voi
       title: p.title,
       sub: p.description,
       lang: p.lang,
-      extra: [h('a', { class: 'btn on-banner', href: link.mistakes(pid) }, `📝 ${t('myMistakes')}`, reviewCount ? h('span', { class: 'badge' }, String(reviewCount)) : null)],
+      extra: [
+        h('a', { class: 'btn on-banner', href: link.mix(pid), title: t('mixedHint') }, '🔀 ' + t('mixedPractice')),
+        h('a', { class: 'btn on-banner', href: link.mistakes(pid) }, `📝 ${t('myMistakes')}`, reviewCount ? h('span', { class: 'badge' }, String(reviewCount)) : null),
+      ],
     }),
     h('h2', {}, t('subjects')),
     h('div', { class: 'grid' },
@@ -203,7 +207,12 @@ export async function renderSubject(root: HTMLElement, pid: string, sid: string)
   page(
     root,
     topbar({ text: p.title, href: link.project(pid) }, { text: s.title }),
-    banner({ icon: s.icon ?? DEFAULT_ICONS[si % DEFAULT_ICONS.length], title: s.title, sub: s.description, lang: p.lang, i: si }),
+    banner({
+      icon: s.icon ?? DEFAULT_ICONS[si % DEFAULT_ICONS.length], title: s.title, sub: s.description, lang: p.lang, i: si,
+      extra: s.games.filter((g) => !gameTypes[g.type]?.passive).length > 1
+        ? [h('a', { class: 'btn on-banner', href: link.mix(pid, sid), title: t('mixedHint') }, '🔀 ' + t('mixedPractice'))]
+        : [],
+    }),
     h('div', { class: 'list' },
       s.games.map((g, i) => {
         const type = gameTypes[g.type];
@@ -241,13 +250,22 @@ export async function renderPlay(root: HTMLElement, pid: string, gid: string): P
   playRound(shell, items, {
     title: data.title ?? found.game.title,
     instructions: data.instructions,
-    lives: settings.lives ?? 3,
-    timeLimit: settings.timeLimit ?? 0,
+    lives: type.passive ? 0 : settings.lives ?? 3,
+    timeLimit: type.passive ? 0 : settings.timeLimit ?? 0,
     lang: p.lang,
     onFinish: (r) => {
+      const next = nextGame(p, gid);
+      const nextHref = next ? link.play(pid, next.id) : undefined;
+      if (type.passive) {
+        store.recordGame(pid, gid, 0, 3);
+        store.addXp(10);
+        lessonDone(root, { title: found.game.title, nextHref, nextTitle: next?.title, backHref: link.subject(pid, found.subject.id), again: () => renderPlay(root, pid, gid), lang: p.lang });
+        return;
+      }
       const { newBest } = store.recordGame(pid, gid, r.score, r.stars);
       store.addXp(r.score);
       results(root, r, {
+        nextHref,
         title: found.game.title,
         newBest,
         again: () => renderPlay(root, pid, gid),
@@ -259,10 +277,35 @@ export async function renderPlay(root: HTMLElement, pid: string, gid: string): P
   });
 }
 
+/** The game after this one: next in its subject, else the first game of the next subject. */
+function nextGame(p: Project, gid: string): GameRef | undefined {
+  const all = p.subjects.flatMap((s) => s.games);
+  return all[all.findIndex((g) => g.id === gid) + 1];
+}
+
+function lessonDone(root: HTMLElement, o: { title: string; nextHref?: string; nextTitle?: string; backHref: string; again: () => void; lang: Lang }): void {
+  sound('win');
+  page(
+    root,
+    topbar(),
+    h('section', { class: 'results' },
+      h('div', { class: 'big-emoji' }, '📖✓'),
+      h('h1', {}, t('lessonDone')),
+      h('p', { class: 'muted', lang: o.lang, dir: 'auto' }, o.title),
+      h('p', {}, t('lessonDoneHint')),
+      h('div', { class: 'actions center' },
+        o.nextHref ? h('a', { class: 'btn primary', href: o.nextHref }, t('nextGame') + ': ', h('span', { lang: o.lang, dir: 'auto' }, o.nextTitle ?? ''), ' →') : null,
+        h('button', { class: 'btn', onclick: o.again }, '↻ ' + t('playAgain')),
+        h('a', { class: 'btn', href: o.backHref }, t('back')),
+      ),
+    ),
+  );
+}
+
 function results(
   root: HTMLElement,
   r: RoundResult,
-  o: { title: string; newBest: boolean; again: () => void; backHref: string; pid: string; lang: Lang },
+  o: { title: string; newBest: boolean; again: () => void; backHref: string; pid: string; lang: Lang; nextHref?: string },
 ): void {
   const acc = r.answered ? Math.round((r.correct / r.answered) * 100) : 0;
   if (r.stars > 0) {
@@ -283,7 +326,8 @@ function results(
       ),
       o.newBest && r.score > 0 ? h('p', { class: 'tag good' }, '🏆 Best!') : null,
       h('div', { class: 'actions center' },
-        h('button', { class: 'btn primary', onclick: o.again }, '↻ ' + t('playAgain')),
+        o.nextHref && r.stars > 0 ? h('a', { class: 'btn primary', href: o.nextHref }, t('nextGame') + ' →') : null,
+        h('button', { class: 'btn' + (o.nextHref && r.stars > 0 ? '' : ' primary'), onclick: o.again }, '↻ ' + t('playAgain')),
         r.wrong.length ? h('a', { class: 'btn', href: link.review(o.pid) }, '📝 ' + t('reviewMistakes')) : null,
         h('a', { class: 'btn', href: o.backHref }, t('back')),
       ),
@@ -377,6 +421,44 @@ export async function renderReview(root: HTMLElement, pid: string): Promise<void
     onFinish: (r) => {
       store.addXp(r.score);
       results(root, r, { title: p.title, newBest: false, again: () => renderReview(root, pid), backHref: link.mistakes(pid), pid, lang: p.lang });
+    },
+  });
+}
+
+// ---------- mixed practice (interleaving) ----------
+
+export async function renderMixed(root: HTMLElement, pid: string, sid?: string): Promise<void> {
+  const entry = await projects.getProject(pid);
+  const p = entry.project;
+  const subjects = sid ? p.subjects.filter((s) => s.id === sid) : p.subjects;
+  if (!subjects.length) throw new Error(`Unknown subject: ${sid}`);
+  const pool: (RoundItem & { rank: number })[] = [];
+  for (const s of subjects) {
+    for (const g of s.games) {
+      const type = gameTypes[g.type];
+      if (!type || type.passive) continue;
+      const data = await projects.getGame(pid, g.id);
+      for (const q of data.questions) {
+        const st = store.questionStat(pid, g.id, q.id);
+        // 0 = in mistakes, 1 = never seen, 2 = seen; random within a rank
+        const rank = (st?.review ? 0 : !st ? 1 : 2) + Math.random();
+        pool.push({ pid, gid: g.id, q, type, source: entry.source, settings: { ...data.settings, timeLimit: 0 }, rank });
+      }
+    }
+  }
+  const picked = shuffle(pool.sort((a, b) => a.rank - b.rank).slice(0, 15));
+  const shell = h('div', {});
+  const subj = sid ? subjects[0] : undefined;
+  page(root, topbar({ text: p.title, href: link.project(pid) }, ...(subj ? [{ text: subj.title, href: link.subject(pid, subj.id) }] : []), { text: t('mixedPractice') }), shell);
+  playRound(shell, picked, {
+    title: '🔀 ' + t('mixedPractice'),
+    instructions: t('mixedHint'),
+    lives: 3,
+    timeLimit: 0,
+    lang: p.lang,
+    onFinish: (r) => {
+      store.addXp(r.score);
+      results(root, r, { title: subj?.title ?? p.title, newBest: false, again: () => renderMixed(root, pid, sid), backHref: subj ? link.subject(pid, subj.id) : link.project(pid), pid, lang: p.lang });
     },
   });
 }

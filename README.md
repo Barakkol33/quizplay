@@ -5,7 +5,9 @@ A general app for learning through games. Content comes as **projects** made of 
 **Site:** https://barakkol33.github.io/quizplay/
 
 - **Project → subjects → games → questions.** Each game has one type.
-- **Game types:** multiple choice (`mcq`), true/false (`truefalse`), type the answer (`typein`), match pairs (`match`), put in order (`order`), flashcards (`flashcards`).
+- **Learn, then play:** a subject can open with a **lesson** (short reading pages), followed by games that test it.
+- **Game types:** lesson (`lesson`), multiple choice (`mcq`), select all that apply (`multi`), true/false (`truefalse`), type the answer (`typein`), fill the blanks (`cloze`), match pairs (`match`), sort into groups (`categorize`), put in order (`order`), flashcards (`flashcards`).
+- **Mixed practice:** a round drawn from every game in a project or subject, starting with questions you got wrong and questions you haven't seen.
 - **Gamification:** score with streak multiplier, hearts, an optional timer, 1–3 stars per game, XP and levels, confetti.
 - **Mistakes are remembered** for each user: a "My mistakes" page per project, and a practice round built from them. A question leaves practice after two correct answers in a row.
 - **Progress is stored in the browser** (localStorage). Several users can share one device, and progress can be exported to and imported from a JSON file. There is no server; everything is on GitHub Pages.
@@ -14,7 +16,7 @@ A general app for learning through games. Content comes as **projects** made of 
 - **Try content before it is added:** the "Load a project" page opens a project from a link, a zip, or a single JSON file.
 - **Make content with AI:** the info page has a ready prompt that turns study material into a project file.
 
-To write content, see [CONTRIBUTING.md](CONTRIBUTING.md).
+To write content, see [CONTRIBUTING.md](CONTRIBUTING.md). What's planned next is in [TODO.md](TODO.md).
 
 ## Running locally
 

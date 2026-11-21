@@ -11,8 +11,10 @@
       "title": "מדע",
       "icon": "🔬",
       "games": [
+        { "id": "sci-lesson", "title": "שיעור: מצבי צבירה", "type": "lesson", "file": "subjects/science/lesson.json" },
         { "id": "sci-mcq", "title": "חידון מדע", "type": "mcq", "file": "subjects/science/mcq.json" },
-        { "id": "sci-tf", "title": "נכון או לא נכון", "type": "truefalse", "file": "subjects/science/tf.json" }
+        { "id": "sci-tf", "title": "נכון או לא נכון", "type": "truefalse", "file": "subjects/science/tf.json" },
+        { "id": "sci-multi", "title": "בחרו את כל הנכונים", "type": "multi", "file": "subjects/science/multi.json" }
       ]
     },
     {
@@ -23,7 +25,9 @@
         { "id": "geo-capitals", "title": "בירות", "type": "typein", "file": "subjects/geo/capitals.json" },
         { "id": "geo-match", "title": "ארץ ויבשת", "type": "match", "file": "subjects/geo/match.json" },
         { "id": "geo-order", "title": "מהגדול לקטן", "type": "order", "file": "subjects/geo/order.json" },
-        { "id": "geo-cards", "title": "כרטיסיות", "type": "flashcards", "file": "subjects/geo/cards.json" }
+        { "id": "geo-cards", "title": "כרטיסיות", "type": "flashcards", "file": "subjects/geo/cards.json" },
+        { "id": "geo-cloze", "title": "השלמת משפט", "type": "cloze", "file": "subjects/geo/cloze.json" },
+        { "id": "geo-categorize", "title": "מיון ליבשות", "type": "categorize", "file": "subjects/geo/categorize.json" }
       ]
     }
   ]

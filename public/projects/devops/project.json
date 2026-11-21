@@ -25,7 +25,8 @@
       "games": [
         { "id": "net-terms", "title": "Networking terms", "type": "mcq", "file": "subjects/networking/terms.json" },
         { "id": "net-tf", "title": "True or false", "type": "truefalse", "file": "subjects/networking/truefalse.json" },
-        { "id": "net-order", "title": "Debug a request, step by step", "type": "order", "file": "subjects/networking/order.json" }
+        { "id": "net-order", "title": "Debug a request, step by step", "type": "order", "file": "subjects/networking/order.json" },
+        { "id": "net-categorize", "title": "Which step failed?", "type": "categorize", "file": "subjects/networking/categorize.json" }
       ]
     },
     {
@@ -34,9 +35,11 @@
       "icon": "🐳",
       "description": "Images, containers, volumes, networks and Compose",
       "games": [
+        { "id": "docker-lesson", "title": "Docker in 5 minutes", "type": "lesson", "file": "subjects/docker/lesson.json" },
         { "id": "docker-quiz", "title": "Docker quiz", "type": "mcq", "file": "subjects/docker/quiz.json" },
         { "id": "docker-tf", "title": "Container myths", "type": "truefalse", "file": "subjects/docker/truefalse.json" },
-        { "id": "docker-cards", "title": "Docker commands", "type": "flashcards", "file": "subjects/docker/cards.json" }
+        { "id": "docker-cards", "title": "Docker commands", "type": "flashcards", "file": "subjects/docker/cards.json" },
+        { "id": "docker-cloze", "title": "Fill the blanks", "type": "cloze", "file": "subjects/docker/cloze.json" }
       ]
     },
     {
@@ -45,9 +48,11 @@
       "icon": "☸️",
       "description": "The control plane, the nodes, and what happens on kubectl apply",
       "games": [
+        { "id": "k8s-lesson", "title": "How Kubernetes works", "type": "lesson", "file": "subjects/kubernetes/lesson.json" },
         { "id": "k8s-quiz", "title": "Architecture quiz", "type": "mcq", "file": "subjects/kubernetes/quiz.json" },
         { "id": "k8s-match", "title": "Components", "type": "match", "file": "subjects/kubernetes/match.json" },
-        { "id": "k8s-order", "title": "From kubectl to a running container", "type": "order", "file": "subjects/kubernetes/order.json" }
+        { "id": "k8s-order", "title": "From kubectl to a running container", "type": "order", "file": "subjects/kubernetes/order.json" },
+        { "id": "k8s-multi", "title": "Select all that apply", "type": "multi", "file": "subjects/kubernetes/multi.json" }
       ]
     },
     {
@@ -58,7 +63,8 @@
       "games": [
         { "id": "delivery-quiz", "title": "Delivery quiz", "type": "mcq", "file": "subjects/delivery/quiz.json" },
         { "id": "delivery-match", "title": "Deployment strategies", "type": "match", "file": "subjects/delivery/match.json" },
-        { "id": "delivery-speed", "title": "Speed round", "type": "truefalse", "file": "subjects/delivery/speed.json" }
+        { "id": "delivery-speed", "title": "Speed round", "type": "truefalse", "file": "subjects/delivery/speed.json" },
+        { "id": "delivery-cloze", "title": "Fill the blanks", "type": "cloze", "file": "subjects/delivery/cloze.json" }
       ]
     }
   ]

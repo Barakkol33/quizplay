@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "lesson",
+  "title": "How Kubernetes works",
+  "settings": { "shuffle": false },
+  "questions": [
+    {
+      "id": "why",
+      "title": "Why Kubernetes",
+      "text": "Docker runs containers on one machine. In production you need more: if the machine crashes, the containers die with it; if traffic spikes, you need more copies fast; with 50 services you need automated deployment and networking.\n\nKubernetes is a **container orchestration system**. You describe the **desired state** in YAML (\"run 3 copies of my app\"), and it keeps working to make reality match. A crashed container is restarted; a dead node's work moves elsewhere."
+    },
+    {
+      "id": "control-plane",
+      "title": "The control plane: the brain",
+      "text": "- **kube-apiserver**: the front door. Every kubectl command and every component talks to it.\n- **etcd**: a key-value store with all cluster state.\n- **kube-scheduler**: picks a node for each new Pod.\n- **kube-controller-manager**: runs controllers that watch state and fix it. The Deployment controller keeps the right number of pods."
+    },
+    {
+      "id": "nodes",
+      "title": "Nodes: the muscle",
+      "text": "- **kubelet**: the agent on each node. Makes sure its pods run, and restarts crashed containers.\n- **container runtime** (usually `containerd`): actually runs the containers.\n- **kube-proxy**: routes traffic for a Service to the right pods.\n- **CNI plugin**: pod-to-pod networking."
+    },
+    {
+      "id": "chain",
+      "title": "From a command to a running container",
+      "text": "1. kubectl sends the request to the **API server**.\n2. The API server stores the desired state in **etcd**.\n3. The **Deployment controller** creates a ReplicaSet.\n4. The ReplicaSet controller creates Pod objects.\n5. The **scheduler** assigns each Pod to a node.\n6. The **kubelet** on that node pulls the image and starts the container."
+    }
+  ]
+}

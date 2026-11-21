@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "cloze",
+  "title": "Fill the blanks",
+  "settings": { "lives": 3 },
+  "questions": [
+    { "id": "revert", "text": "To undo a commit on a shared branch, use git {{revert}}: it adds a new commit and keeps history.", "extra": ["reset", "rebase", "stash"] },
+    { "id": "rebase", "text": "git {{rebase}} replays your commits on top of another branch and rewrites them.", "extra": ["merge", "revert", "fetch"] },
+    { "id": "delivery", "text": "Continuous {{delivery}} keeps one manual approval before release; continuous {{deployment}} has none.", "extra": ["integration", "testing"] },
+    { "id": "build-once", "text": "Build once, deploy many: the same {{artifact}} goes through every environment, and only {{configuration}} changes.", "extra": ["branch", "runner"] },
+    { "id": "canary", "text": "A {{canary}} release sends a small share of traffic to the new version first.", "extra": ["blue-green", "recreate"] },
+    { "id": "flags", "text": "A feature {{flag}} separates deploy from release.", "extra": ["tag", "branch"] }
+  ]
+}

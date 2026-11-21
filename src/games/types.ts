@@ -20,6 +20,8 @@ export interface GameType {
   type: string;
   label: { he: string; en: string };
   icon: string;
+  /** Not a question (e.g. a lesson page): no score, no feedback, just move on. */
+  passive?: boolean;
   /** Returns a problem description, or null if the question is valid. */
   check(q: Question): string | null;
   /** Short text of the question, for the mistakes list. */

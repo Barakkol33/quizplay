@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "cloze",
+  "title": "Fill the blanks",
+  "settings": { "lives": 3 },
+  "questions": [
+    { "id": "image-container", "text": "A {{container}} is a running instance of an {{image}}.", "extra": ["volume", "registry"] },
+    { "id": "limits", "text": "{{Namespaces}} give a container its own view, and {{cgroups}} set its limits.", "extra": ["OverlayFS", "iptables"] },
+    { "id": "oom", "text": "Above its memory limit the kernel kills the container with exit code {{137}}.", "extra": ["0", "1", "143"] },
+    { "id": "publish", "text": "In -p 8088:80, {{8088}} is the port on the host and {{80}} is the port in the container.", "extra": ["443", "22"] },
+    { "id": "volume", "text": "Data written outside a {{volume}} is lost when the container is removed.", "extra": ["layer", "tag", "network"] },
+    { "id": "digest", "text": "A {{tag}} can move to another image, but a {{digest}} never moves.", "extra": ["layer", "label"] }
+  ]
+}

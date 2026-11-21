@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "multi",
+  "title": "בחרו את כל הנכונים",
+  "questions": [
+    { "id": "liquids", "question": "אילו מהבאים נוזלים בטמפרטורת החדר?", "options": ["מים", "שמן זית", "כספית", "ברזל", "חמצן"], "answers": [0, 1, 2] },
+    { "id": "heating", "question": "אילו מעברים קורים כשמחממים?", "options": ["התכה", "רתיחה", "עיבוי", "קיפאון"], "answers": [0, 1] }
+  ]
+}

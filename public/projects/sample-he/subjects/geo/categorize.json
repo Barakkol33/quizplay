@@ -1,0 +1,17 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "categorize",
+  "title": "מיון ליבשות",
+  "settings": { "lives": 0 },
+  "questions": [
+    {
+      "id": "continents",
+      "prompt": "באיזו יבשת נמצאת המדינה?",
+      "groups": [
+        { "name": "אירופה", "items": ["צרפת", "פולין"] },
+        { "name": "אסיה", "items": ["יפן", "תאילנד"] },
+        { "name": "אפריקה", "items": ["קניה", "מרוקו"] }
+      ]
+    }
+  ]
+}

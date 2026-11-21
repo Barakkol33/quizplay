@@ -106,7 +106,12 @@ async function validate(reader) {
         if (ids.has(q.id)) problems.push(`${where}: duplicate question id "${q.id}"`);
         ids.add(q.id);
         if (data.type === 'mcq' && q.answer >= q.options.length) problems.push(`${where} / ${q.id}: answer ${q.answer} but only ${q.options.length} options`);
-        if (data.type === 'mcq' && new Set(q.options).size !== q.options.length) problems.push(`${where} / ${q.id}: two options are the same`);
+        if (data.type === 'multi' && q.answers.some((a) => a >= q.options.length)) problems.push(`${where} / ${q.id}: an answer index is past the last option`);
+        if (data.type === 'categorize') {
+          const all = q.groups.flatMap((x) => x.items);
+          if (new Set(all).size !== all.length) problems.push(`${where} / ${q.id}: the same item is in two groups`);
+        }
+        if ((data.type === 'mcq' || data.type === 'multi') && new Set(q.options).size !== q.options.length) problems.push(`${where} / ${q.id}: two options are the same`);
         if (q.image && !/^(https?:|data:)/.test(q.image) && !reader.has(q.image)) problems.push(`${where} / ${q.id}: image not found: ${q.image}`);
       }
     }

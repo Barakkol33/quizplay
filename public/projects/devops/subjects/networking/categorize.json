@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "categorize",
+  "title": "Which step failed?",
+  "settings": { "lives": 0 },
+  "questions": [
+    {
+      "id": "symptoms",
+      "prompt": "A request failed. Which step is broken?",
+      "groups": [
+        { "name": "DNS", "items": ["dig answers NXDOMAIN", "The A record points to an old server"] },
+        { "name": "TCP", "items": ["Connection refused", "nc -vz hangs: a firewall drops the traffic"] },
+        { "name": "TLS", "items": ["The certificate expired", "The certificate is for another name"] },
+        { "name": "HTTP", "items": ["The server answers 500", "The server answers 502"] }
+      ],
+      "explanation": "Follow the request: DNS, then TCP, then TLS, then HTTP. A 5xx answer means the network is fine and the application is broken."
+    },
+    {
+      "id": "dns-records",
+      "prompt": "Which DNS record type holds this?",
+      "groups": [
+        { "name": "A", "items": ["10.0.1.25", "20.217.135.5"] },
+        { "name": "CNAME", "items": ["www.github.com → github.com"] },
+        { "name": "MX", "items": ["10 alt1.gmail-smtp-in.l.google.com"] },
+        { "name": "NS", "items": ["hera.ns.cloudflare.com"] }
+      ]
+    }
+  ]
+}

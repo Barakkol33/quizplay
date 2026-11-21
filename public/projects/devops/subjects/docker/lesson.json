@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "lesson",
+  "title": "Docker in 5 minutes",
+  "settings": { "shuffle": false },
+  "questions": [
+    {
+      "id": "what",
+      "title": "What Docker does",
+      "text": "Docker packages an application together with everything it needs to run (the libraries, the runtime, the configuration) into one file, an **image**, and runs it as an isolated process, a **container**.\n\nThe same image runs on a laptop, in CI and in production, which ends \"it works on my machine\". CI builds an image, a registry stores it, and Kubernetes runs it."
+    },
+    {
+      "id": "terms",
+      "title": "Five words to know",
+      "text": "- **Image**: a read-only package of the app and its dependencies. Built once, run many times.\n- **Container**: a running instance of an image. A normal Linux process with its own view of files, network and processes.\n- **Dockerfile**: the recipe an image is built from, one instruction per line. Each instruction adds a **layer**.\n- **Registry**: a server that stores images: Docker Hub, ghcr.io, ECR.\n- **Tag**: a movable name for an image version, like `nginx:1.27-alpine`. `latest` is only the default tag, not \"the newest\". A **digest** (`sha256:…`) never moves."
+    },
+    {
+      "id": "not-vm",
+      "title": "Not a small virtual machine",
+      "text": "A VM has its own kernel on emulated hardware. A container is a process on the host's kernel that the kernel isolates:\n\n- **Namespaces** give it its own view: process IDs, network, filesystem, host name.\n- **cgroups** set limits: CPU, memory, I/O. Above its memory limit the kernel kills it: exit code **137** (`OOMKilled` in Kubernetes).\n- A **layered filesystem** (OverlayFS): the image's read-only layers with a thin writable layer on top, thrown away with the container.\n\nSo a container starts in milliseconds, and anything written outside a **volume** is lost when it is removed."
+    },
+    {
+      "id": "networking",
+      "title": "Ports, volumes and networks",
+      "text": "`-p 127.0.0.1:8088:80` forwards port 8088 on the host to port 80 in the container. Without the `127.0.0.1`, the port is open to the whole network.\n\nA **volume** outlives the container: put database files there.\n\nOn a network you create, Docker runs a DNS server and a container's name is its host name. `localhost` inside a container is the container itself, never another container."
+    }
+  ]
+}

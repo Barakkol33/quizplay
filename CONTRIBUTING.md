@@ -97,6 +97,26 @@ Every question needs an `id`, unique in its game. Any question can have an `expl
 
 ## Question shapes, by game type
 
+**`lesson`: reading pages.** Put a lesson first in a subject, and the games after it. Each "question" is a page. `text` supports paragraphs (separated by a blank line), `## heading`, `- bullet`, `1. step`, `**bold**` and `` `code` ``.
+```json
+{ "id": "p1", "title": "What Docker does", "text": "Docker packages an app into an **image**.\n\n- An image is built once\n- A container is a running image" }
+```
+
+**`multi`: select all that apply.** `answers` lists every correct index.
+```json
+{ "id": "q1", "question": "Which are prime?", "options": ["2", "3", "4", "5"], "answers": [0, 1, 3] }
+```
+
+**`cloze`: fill the blanks** from a word bank. Blanks go in `{{double braces}}`, and `extra` adds wrong words to the bank.
+```json
+{ "id": "q1", "text": "A {{container}} is a running {{image}}.", "extra": ["volume", "registry"] }
+```
+
+**`categorize`: sort into groups.** Items come one at a time; it counts as correct only with no wrong tries.
+```json
+{ "id": "q1", "prompt": "Mammal or bird?", "groups": [{ "name": "Mammal", "items": ["dog", "whale"] }, { "name": "Bird", "items": ["eagle", "penguin"] }] }
+```
+
 **`mcq`: multiple choice.** `answer` is the index of the correct option, counting from 0. The options are shuffled, so you can always put the correct one first.
 ```json
 { "id": "q1", "question": "2 + 2 = ?", "options": ["4", "3", "5", "22"], "answer": 0, "explanation": "Two pairs." }
