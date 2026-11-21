@@ -7,6 +7,7 @@ import * as store from '../store';
 import * as projects from '../projects';
 import type { GameRef, Lang, Project } from '../types';
 import { AI_PROMPT, aboutContent } from './about';
+import { answerView } from '../games/code';
 
 const enc = encodeURIComponent;
 export const link = {
@@ -337,8 +338,8 @@ function results(
           r.wrong.map(({ item, given }) =>
             h('div', { class: 'mistake' },
               h('p', { dir: 'auto' }, h('strong', {}, item.type.prompt(item.q))),
-              given && given !== '⏱' ? h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'bad-text' }, '✗ '), given) : null,
-              h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'good-text' }, '✓ '), item.type.answer(item.q, t)),
+              given && given !== '⏱' ? h('div', { class: 'small answer-line', dir: 'auto' }, h('span', { class: 'bad-text' }, '✗ '), answerView(given, item.type.type === 'code')) : null,
+              h('div', { class: 'small answer-line', dir: 'auto' }, h('span', { class: 'good-text' }, '✓ '), answerView(item.type.answer(item.q, t), item.type.type === 'code')),
               item.q.explanation ? h('p', { class: 'small muted', dir: 'auto' }, item.q.explanation) : null,
             ),
           ),
@@ -392,9 +393,9 @@ export async function renderMistakes(root: HTMLElement, pid: string): Promise<vo
           h('div', { lang: p.lang, dir: dirOf(p.lang) },
             h('p', { dir: 'auto' }, h('strong', {}, i.type.prompt(i.q))),
             i.stat.lastAnswer && i.stat.lastAnswer !== '⏱'
-              ? h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'bad-text' }, '✗ '), i.stat.lastAnswer)
+              ? h('div', { class: 'small answer-line', dir: 'auto' }, h('span', { class: 'bad-text' }, '✗ '), answerView(i.stat.lastAnswer, i.type.type === 'code'))
               : null,
-            h('p', { class: 'small', dir: 'auto' }, h('span', { class: 'good-text' }, '✓ '), i.type.answer(i.q, t)),
+            h('div', { class: 'small answer-line', dir: 'auto' }, h('span', { class: 'good-text' }, '✓ '), answerView(i.type.answer(i.q, t), i.type.type === 'code')),
           ),
           h('p', { class: 'muted small' }, `${t('timesWrong')}: ${i.stat.wrong}`),
         ),
@@ -633,6 +634,26 @@ export function renderProfile(root: HTMLElement): void {
         onsubmit: (e: Event) => { e.preventDefault(); store.switchUser(nameInput.value); re(); },
       }, nameInput, h('button', { class: 'btn primary', type: 'submit' }, t('add'))),
     ),
+    (() => {
+      const rows = store.ratingRows();
+      const ups = rows.filter((r) => r.rating === 'up').length;
+      const download = (text: string, name: string, type: string) => {
+        const a = h('a', { href: URL.createObjectURL(new Blob([text], { type })), download: name });
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      };
+      const stamp = new Date().toISOString().slice(0, 10);
+      return h('div', { class: 'panel ratings-panel' },
+        h('h3', {}, '👍👎 ' + t('ratings')),
+        h('p', { class: 'muted small' }, t('ratingsNote')),
+        h('p', {}, `👍 ${ups} · 👎 ${rows.length - ups}`),
+        h('div', { class: 'actions' },
+          h('button', { class: 'btn primary', disabled: !rows.length, onclick: () => download(store.ratingsCsv(), `quizplay-ratings-${store.currentName()}-${stamp}.csv`, 'text/csv;charset=utf-8') }, '⬇ ' + t('exportRatingsCsv')),
+          h('button', { class: 'btn', disabled: !rows.length, onclick: () => download(store.ratingsJson(), `quizplay-ratings-${store.currentName()}-${stamp}.json`, 'application/json') }, '⬇ ' + t('exportRatingsJson')),
+          rows.length ? h('button', { class: 'btn small danger-link', onclick: () => { if (confirm(t('confirmClearRatings'))) { store.clearRatings(); re(); } } }, t('clearRatings')) : null,
+        ),
+      );
+    })(),
     h('div', { class: 'panel' },
       h('p', { class: 'muted small' }, t('progressNote')),
       h('div', { class: 'actions' },

@@ -6,6 +6,8 @@ import { onLeave } from './leave';
 import * as store from './store';
 import type { GameSettings, Lang, Question } from './types';
 import type { GameType } from './games/types';
+import { answerView } from './games/code';
+import { ratingWidget } from './ui/rating';
 import type { Source } from './source';
 
 export interface RoundItem {
@@ -149,9 +151,10 @@ export function playRound(root: HTMLElement, items: RoundItem[], opts: RoundOpti
       feedback.append(
         h('div', { class: 'feedback-box ' + (right ? 'ok' : 'bad') },
           h('strong', {}, right ? '✓ ' + t('correct') : given === '⏱' ? '⏱ ' + t('timeUp') : '✗ ' + t('wrong')),
-          !right ? h('p', { dir: 'auto' }, h('span', { class: 'muted' }, t('correctAnswer') + ': '), item.type.answer(item.q, t)) : null,
+          !right && item.type.answer(item.q, t) ? h('div', { class: 'answer-line', dir: 'auto' }, h('span', { class: 'muted' }, t('correctAnswer') + ': '), answerView(item.type.answer(item.q, t), item.type.type === 'code')) : null,
           item.q.explanation ? h('p', { class: 'explanation', dir: 'auto' }, item.q.explanation) : null,
           h('div', { class: 'actions' }, next),
+          ratingWidget(item.pid, item.gid, item.q, item.type),
         ),
       );
       next.focus();
@@ -164,6 +167,8 @@ export function playRound(root: HTMLElement, items: RoundItem[], opts: RoundOpti
       done,
       onKey: (fn) => (keyHandler = fn),
     });
+    // Lesson pages have no feedback box, so their rating sits under the page.
+    if (item.type.passive) body.append(ratingWidget(item.pid, item.gid, item.q, item.type));
 
     if (opts.timeLimit) {
       const fill = timeBar.firstChild as HTMLElement;

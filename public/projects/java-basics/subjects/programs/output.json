@@ -1,0 +1,68 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "output",
+  "title": "מעקב אחרי תוכנית",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "squares",
+      "code": "for (int i = 1; i <= 3; i++) {\n    System.out.print(i * i + \" \");\n}",
+      "output": "1 4 9"
+    },
+    {
+      "id": "sum-loop",
+      "code": "int sum = 0;\nfor (int i = 1; i <= 5; i++) {\n    sum += i;\n}\nSystem.out.println(sum);",
+      "output": "15"
+    },
+    {
+      "id": "if-mod",
+      "code": "int x = 10;\nif (x % 3 == 0) {\n    System.out.println(\"Fizz\");\n} else {\n    System.out.println(x % 3);\n}",
+      "output": "1"
+    },
+    {
+      "id": "step-down",
+      "code": "for (int i = 10; i > 0; i -= 3) {\n    System.out.print(i + \",\");\n}",
+      "output": "10,7,4,1,"
+    },
+    {
+      "id": "digit-sum",
+      "code": "int n = 4729, s = 0;\nwhile (n > 0) {\n    s += n % 10;\n    n /= 10;\n}\nSystem.out.println(s);",
+      "output": "22",
+      "explanation": "כל סיבוב מוסיף את ספרת האחדות (n % 10) ומוריד אותה (n /= 10): 9+2+7+4 = 22."
+    },
+    {
+      "id": "triangle",
+      "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= i; j++) {\n        System.out.print(\"*\");\n    }\n    System.out.println();\n}",
+      "output": "*\n**\n***"
+    },
+    {
+      "id": "count-div4",
+      "code": "int count = 0;\nfor (int i = 1; i <= 20; i++) {\n    if (i % 4 == 0) {\n        count++;\n    }\n}\nSystem.out.println(count);",
+      "output": "5"
+    },
+    {
+      "id": "swap",
+      "code": "int a = 3, b = 7;\nint t = a;\na = b;\nb = t;\nSystem.out.println(a + \" \" + b);",
+      "output": "7 3"
+    },
+    {
+      "id": "avg-int",
+      "code": "int a = 7, b = 8, c = 10;\nSystem.out.println((a + b + c) / 3);",
+      "output": "8",
+      "options": [
+        "8",
+        "8.33",
+        "8.333333333333334",
+        "25"
+      ],
+      "explanation": "כל הערכים int, אז החילוק חותך: 25 / 3 = 8."
+    },
+    {
+      "id": "seconds",
+      "code": "int total = 3725;\nSystem.out.println(total / 3600 + \":\" + total % 3600 / 60 + \":\" + total % 60);",
+      "output": "1:2:5"
+    }
+  ]
+}

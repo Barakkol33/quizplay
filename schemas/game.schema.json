@@ -22,7 +22,9 @@
         "match",
         "categorize",
         "order",
-        "flashcards"
+        "flashcards",
+        "output",
+        "code"
       ]
     },
     "title": {
@@ -250,6 +252,42 @@
           }
         }
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "output"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "questions": {
+            "items": {
+              "$ref": "#/definitions/output"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "code"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "questions": {
+            "items": {
+              "$ref": "#/definitions/code"
+            }
+          }
+        }
+      }
     }
   ],
   "definitions": {
@@ -299,6 +337,10 @@
           "type": "integer",
           "minimum": 0,
           "description": "Index (from 0) of the correct option"
+        },
+        "code": {
+          "type": "string",
+          "description": "Optional code shown under the question, as a code block"
         }
       }
     },
@@ -313,6 +355,10 @@
         },
         "answer": {
           "type": "boolean"
+        },
+        "code": {
+          "type": "string",
+          "description": "Optional code shown under the question, as a code block"
         }
       }
     },
@@ -332,6 +378,10 @@
             "$ref": "#/definitions/text"
           },
           "description": "All accepted answers. Case, niqqud and punctuation are ignored. The first one is shown as the correct answer"
+        },
+        "code": {
+          "type": "string",
+          "description": "Optional code shown under the question, as a code block"
         }
       }
     },
@@ -429,6 +479,10 @@
             "minimum": 0
           },
           "description": "Indexes (from 0) of ALL correct options"
+        },
+        "code": {
+          "type": "string",
+          "description": "Optional code shown under the question, as a code block"
         }
       }
     },
@@ -448,6 +502,13 @@
             "$ref": "#/definitions/text"
           },
           "description": "Extra wrong words for the word bank"
+        },
+        "code": {
+          "type": "boolean",
+          "description": "Show the text as a code block (keeps spaces and line breaks)"
+        },
+        "prompt": {
+          "type": "string"
         }
       }
     },
@@ -481,6 +542,67 @@
               }
             }
           }
+        }
+      }
+    },
+    "output": {
+      "required": [
+        "code",
+        "output"
+      ],
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": "Optional; default \"What does this program print?\""
+        },
+        "code": {
+          "$ref": "#/definitions/text"
+        },
+        "output": {
+          "type": "string",
+          "description": "The exact output. Use \n between lines"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          },
+          "description": "Optional: choices instead of typing; the correct output FIRST (shuffled)"
+        }
+      }
+    },
+    "code": {
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "prompt": {
+          "$ref": "#/definitions/text",
+          "description": "The task. Supports the lesson mini-Markdown"
+        },
+        "starter": {
+          "type": "string",
+          "description": "Starting code. Default: an empty Main class"
+        },
+        "expected": {
+          "type": "string",
+          "description": "Exact expected output"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression the whole output must match (for random output)"
+        },
+        "showExpected": {
+          "type": "boolean",
+          "description": "Let the learner peek at the expected output. Default true"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "solution": {
+          "type": "string",
+          "description": "A full working program, shown if the learner gives up"
         }
       }
     }

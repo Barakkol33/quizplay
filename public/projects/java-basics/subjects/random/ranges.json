@@ -1,0 +1,153 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "טווחים: מה יכול לצאת?",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "nextint-10",
+      "question": "אילו ערכים יכולים לצאת?",
+      "code": "rnd.nextInt(10)",
+      "options": [
+        "0 עד 9",
+        "1 עד 10",
+        "0 עד 10",
+        "1 עד 9"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "dice",
+      "question": "אילו ערכים יכולים לצאת?",
+      "code": "rnd.nextInt(6) + 1",
+      "options": [
+        "1 עד 6",
+        "0 עד 6",
+        "1 עד 7",
+        "0 עד 5"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "shifted",
+      "question": "אילו ערכים יכולים לצאת?",
+      "code": "rnd.nextInt(11) + 5",
+      "options": [
+        "5 עד 15",
+        "5 עד 16",
+        "0 עד 15",
+        "6 עד 16"
+      ],
+      "answer": 0,
+      "explanation": "nextInt(11) נותן 0 עד 10, ועוד 5: 5 עד 15."
+    },
+    {
+      "id": "math-random-6",
+      "question": "אילו ערכים יכולים לצאת?",
+      "code": "(int) (Math.random() * 6) + 1",
+      "options": [
+        "1 עד 6",
+        "0 עד 6",
+        "0 עד 5",
+        "1 עד 7"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "trap",
+      "question": "מה הערך של הביטוי?",
+      "code": "(int) Math.random() * 10",
+      "options": [
+        "תמיד 0",
+        "0 עד 9",
+        "0 עד 10",
+        "1 עד 10"
+      ],
+      "answer": 0,
+      "explanation": "ההמרה נצמדת ל-Math.random(): הוא קטן מ-1 אז נחתך ל-0, ו-0*10 = 0."
+    },
+    {
+      "id": "double-range",
+      "question": "מה יכול לצאת?",
+      "code": "Math.random() * 5",
+      "options": [
+        "double מ-0.0 עד 5.0, לא כולל 5.0",
+        "int מ-0 עד 5",
+        "int מ-0 עד 4",
+        "double מ-1.0 עד 5.0"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "pick-20-30",
+      "question": "איזה ביטוי נותן מספר שלם אקראי בין 20 ל-30 (כולל)?",
+      "options": [
+        "rnd.nextInt(11) + 20",
+        "rnd.nextInt(10) + 20",
+        "rnd.nextInt(30) + 20",
+        "rnd.nextInt(20, 30)"
+      ],
+      "answer": 0,
+      "explanation": "יש 11 ערכים (30-20+1), ומתחילים ב-20."
+    },
+    {
+      "id": "pick-1-100",
+      "question": "איזה ביטוי נותן מספר שלם אקראי בין 1 ל-100 (כולל)?",
+      "options": [
+        "(int) (Math.random() * 100) + 1",
+        "(int) (Math.random() * 100)",
+        "(int) Math.random() * 100 + 1",
+        "(int) (Math.random() * 101)"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "coin",
+      "question": "אילו ערכים יכולים לצאת?",
+      "code": "rnd.nextInt(2)",
+      "options": [
+        "0 או 1",
+        "1 או 2",
+        "0, 1 או 2",
+        "true או false"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "import",
+      "question": "מה צריך לכתוב בראש הקובץ כדי להשתמש ב-Random?",
+      "options": [
+        "import java.util.Random;",
+        "import java.lang.Math;",
+        "import Random;",
+        "שום דבר"
+      ],
+      "answer": 0,
+      "explanation": "Math נמצא ב-java.lang ולא צריך import. Random נמצא ב-java.util."
+    },
+    {
+      "id": "seed",
+      "question": "מה מיוחד ב-new Random(42)?",
+      "options": [
+        "בכל הרצה יוצאת אותה סדרת מספרים",
+        "כל המספרים יהיו עד 42",
+        "המספר הראשון יהיה 42",
+        "זו שגיאת קומפילציה"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "random-type",
+      "question": "איזה טיפוס מחזיר Math.random()?",
+      "options": [
+        "double",
+        "int",
+        "long",
+        "boolean"
+      ],
+      "answer": 0
+    }
+  ]
+}

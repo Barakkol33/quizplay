@@ -117,6 +117,18 @@ Every question needs an `id`, unique in its game. Any question can have an `expl
 { "id": "q1", "prompt": "Mammal or bird?", "groups": [{ "name": "Mammal", "items": ["dog", "whale"] }, { "name": "Bird", "items": ["eagle", "penguin"] }] }
 ```
 
+**Code in questions.** `mcq`, `multi`, `truefalse` and `typein` questions can add `"code": "..."`, shown as a code block under the question. In a `cloze`, `"code": true` shows the text as code. Lessons support ```` ```java ```` fenced blocks.
+
+**`output`: what does it print?** `code` is a full class or just statements (they run inside `main`, with `java.util.*` imported). `output` is the exact text printed, with `\n` between lines. Add `options` (correct one first) for multiple choice instead of typing, and `input` for what the user types into a `Scanner`.
+```json
+{ "id": "q1", "code": "System.out.println(7 / 2);", "output": "3", "explanation": "Integer division." }
+```
+
+**`code`: write and run Java.** Runs in the browser. Passes when the output equals `expected`, or matches the regular expression `pattern` (for random output). `input` is fed to `Scanner`. `solution` is shown if the player gives up, and `npm run check-java` runs it to prove it's right.
+```json
+{ "id": "q1", "prompt": "Print the sum of two numbers read with Scanner.", "input": "7\n5", "expected": "12", "solution": "import java.util.Scanner;\npublic class Main { ... }" }
+```
+
 **`mcq`: multiple choice.** `answer` is the index of the correct option, counting from 0. The options are shuffled, so you can always put the correct one first.
 ```json
 { "id": "q1", "question": "2 + 2 = ?", "options": ["4", "3", "5", "22"], "answer": 0, "explanation": "Two pairs." }

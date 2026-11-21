@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "lesson",
+  "title": "הדפסות ב-Java",
+  "settings": {
+    "shuffle": false
+  },
+  "questions": [
+    {
+      "id": "println",
+      "title": "println ו-print",
+      "text": "ההדפסה הבסיסית ב-Java:\n\n```java\nSystem.out.println(\"Hello\");   // מדפיס ויורד שורה\nSystem.out.print(\"A\");          // מדפיס בלי לרדת שורה\nSystem.out.print(\"B\");\nSystem.out.println();           // רק ירידת שורה\n```\n\nהפלט: `Hello`, ואז `AB` באותה שורה.\n\n- **println**: מדפיס ואז יורד לשורה חדשה.\n- **print**: מדפיס ונשאר באותה שורה."
+    },
+    {
+      "id": "concat",
+      "title": "חיבור מחרוזות (שרשור)",
+      "text": "הסימן `+` עושה שני דברים שונים: בין מספרים הוא **חיבור**, וכשאחד הצדדים מחרוזת הוא **שרשור** (הדבקה).\n\nJava קוראת משמאל לימין:\n\n```java\nSystem.out.println(1 + 2 + \"3\");   // 33  : קודם 1+2=3, אחר כך \"3\"+\"3\"\nSystem.out.println(\"1\" + 2 + 3);   // 123 : \"1\"+2=\"12\", אחר כך \"12\"+3\nSystem.out.println(\"Sum: \" + (2 + 3)); // Sum: 5 : הסוגריים קודם\n```\n\n**טיפ למבחן:** כשמדפיסים חישוב עם טקסט, שמים את החישוב בסוגריים."
+    },
+    {
+      "id": "escape",
+      "title": "תווים מיוחדים",
+      "text": "בתוך מחרוזת, לוכסן הפוך `\\` פותח תו מיוחד:\n\n- `\\n`: שורה חדשה\n- `\\t`: טאב (רווח גדול)\n- `\\\"`: גרשיים בתוך מחרוזת\n- `\\\\`: לוכסן הפוך עצמו\n\n```java\nSystem.out.println(\"He said \\\"hi\\\"\");  // He said \"hi\"\nSystem.out.println(\"Line1\\nLine2\");      // שתי שורות\n```"
+    },
+    {
+      "id": "printf",
+      "title": "תוספת: printf",
+      "text": "printf מדפיס לפי תבנית. כל `%` הוא מקום שממלאים בערך:\n\n- `%d`: מספר שלם (int)\n- `%f`: מספר עשרוני. `%.2f` = שתי ספרות אחרי הנקודה (עם עיגול)\n- `%s`: מחרוזת\n- `%n`: ירידת שורה (printf לא יורד שורה לבד!)\n- רוחב: `%5d` תופס 5 תווים, `%-5d` מיושר לשמאל, `%05d` ממלא אפסים\n\n```java\nSystem.out.printf(\"%d + %d = %d%n\", 2, 3, 5);  // 2 + 3 = 5\nSystem.out.printf(\"%.2f%n\", 3.14159);          // 3.14\nSystem.out.printf(\"Name: %s%n\", \"Dana\");       // Name: Dana\n```"
+    }
+  ]
+}

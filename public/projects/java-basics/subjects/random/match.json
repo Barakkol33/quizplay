@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "match",
+  "title": "ביטוי וטווח",
+  "settings": {
+    "lives": 0
+  },
+  "questions": [
+    {
+      "id": "ranges",
+      "prompt": "חברו כל ביטוי לטווח שלו",
+      "pairs": [
+        [
+          "rnd.nextInt(6)",
+          "0 עד 5"
+        ],
+        [
+          "rnd.nextInt(6) + 1",
+          "1 עד 6"
+        ],
+        [
+          "rnd.nextInt(10) + 10",
+          "10 עד 19"
+        ],
+        [
+          "rnd.nextInt(3) * 2",
+          "0, 2 או 4"
+        ],
+        [
+          "(int) Math.random() * 6",
+          "תמיד 0"
+        ]
+      ]
+    }
+  ]
+}

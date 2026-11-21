@@ -1,0 +1,160 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "output",
+  "title": "מה יודפס? חשבון",
+  "settings": {
+    "lives": 3,
+    "count": 14
+  },
+  "questions": [
+    {
+      "id": "int-div",
+      "code": "System.out.println(7 / 2);",
+      "output": "3",
+      "explanation": "חילוק בין שני int חותך את החלק העשרוני."
+    },
+    {
+      "id": "double-div",
+      "code": "System.out.println(7 / 2.0);",
+      "output": "3.5"
+    },
+    {
+      "id": "mod",
+      "code": "System.out.println(7 % 3);",
+      "output": "1"
+    },
+    {
+      "id": "neg-mod",
+      "code": "System.out.println(-7 % 3);",
+      "output": "-1",
+      "options": [
+        "-1",
+        "2",
+        "1",
+        "-2"
+      ],
+      "explanation": "ב-Java סימן השארית כמו סימן המספר השמאלי."
+    },
+    {
+      "id": "precedence",
+      "code": "System.out.println(2 + 3 * 4);",
+      "output": "14"
+    },
+    {
+      "id": "left-to-right",
+      "code": "System.out.println(20 / 4 * 2);",
+      "output": "10",
+      "explanation": "/ ו-* באותה רמה, אז משמאל לימין: 20/4=5, ואז 5*2."
+    },
+    {
+      "id": "double-from-int-div",
+      "code": "double d = 7 / 2;\nSystem.out.println(d);",
+      "output": "3.0",
+      "options": [
+        "3.0",
+        "3.5",
+        "3",
+        "שגיאת קומפילציה"
+      ],
+      "explanation": "קודם מחושב 7/2 כחילוק שלמים (3), ורק אז נשמר ב-double: 3.0."
+    },
+    {
+      "id": "cast-first",
+      "code": "System.out.println((double) 7 / 2);",
+      "output": "3.5"
+    },
+    {
+      "id": "cast-truncates",
+      "code": "System.out.println((int) 3.99);",
+      "output": "3",
+      "explanation": "המרה ל-int חותכת, לא מעגלת."
+    },
+    {
+      "id": "compound",
+      "code": "int x = 5;\nx += 3;\nx *= 2;\nSystem.out.println(x);",
+      "output": "16"
+    },
+    {
+      "id": "post-inc",
+      "code": "int a = 5;\nint b = a++;\nSystem.out.println(a + \" \" + b);",
+      "output": "6 5"
+    },
+    {
+      "id": "pre-inc",
+      "code": "int a = 5;\nint b = ++a;\nSystem.out.println(a + \" \" + b);",
+      "output": "6 6"
+    },
+    {
+      "id": "pow",
+      "code": "System.out.println(Math.pow(2, 3));",
+      "output": "8.0",
+      "explanation": "Math.pow מחזיר תמיד double."
+    },
+    {
+      "id": "sqrt",
+      "code": "System.out.println(Math.sqrt(16));",
+      "output": "4.0"
+    },
+    {
+      "id": "max-min",
+      "code": "System.out.println(Math.max(3, 8) + Math.min(3, 8));",
+      "output": "11"
+    },
+    {
+      "id": "round",
+      "code": "System.out.println(Math.round(2.5) + \" \" + Math.round(2.4));",
+      "output": "3 2"
+    },
+    {
+      "id": "ceil-floor",
+      "code": "System.out.println(Math.ceil(4.1) + \" \" + Math.floor(4.9));",
+      "output": "5.0 4.0"
+    },
+    {
+      "id": "overflow",
+      "code": "System.out.println(Integer.MAX_VALUE + 1);",
+      "output": "-2147483648",
+      "options": [
+        "-2147483648",
+        "2147483648",
+        "שגיאה בזמן ריצה",
+        "0"
+      ],
+      "explanation": "int מוגבל ל-2,147,483,647. מעבר לזה הוא \"מתגלגל\" למספר השלילי הקטן ביותר, בלי שגיאה."
+    },
+    {
+      "id": "div-zero-double",
+      "code": "System.out.println(10.0 / 0);",
+      "output": "Infinity",
+      "options": [
+        "Infinity",
+        "ArithmeticException",
+        "0",
+        "NaN"
+      ],
+      "explanation": "חילוק double באפס נותן Infinity. חילוק int באפס זורק ArithmeticException."
+    },
+    {
+      "id": "digits",
+      "code": "int n = 1234;\nSystem.out.println(n % 10 + \" \" + n / 10);",
+      "output": "4 123"
+    },
+    {
+      "id": "float-error",
+      "code": "System.out.println(0.1 + 0.2);",
+      "output": "0.30000000000000004",
+      "options": [
+        "0.30000000000000004",
+        "0.3",
+        "0.30",
+        "0.2999999999999999"
+      ],
+      "explanation": "double לא מייצג בדיוק כל שבר עשרוני, אז יש שגיאות עיגול זעירות."
+    },
+    {
+      "id": "even",
+      "code": "int n = 17;\nSystem.out.println(n % 2 == 0);",
+      "output": "false"
+    }
+  ]
+}

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "validate": "node scripts/validate.mjs"
+    "validate": "node scripts/validate.mjs",
+    "check-java": "node scripts/check-java.mjs"
   },
   "dependencies": {
     "jszip": "^3.10.1"

@@ -1,6 +1,7 @@
 import { h, shuffle } from '../dom';
 import type { GameType } from './types';
 import { isStr, isStrArr } from './common';
+import { highlight } from './code';
 
 /** "A {{container}} runs an {{image}}." → blanks filled from a word bank. */
 const parts = (text: string) => text.split(/\{\{(.+?)\}\}/);
@@ -50,9 +51,11 @@ export const cloze: GameType = {
       draw();
     };
 
-    const sentence = h('p', { class: 'cloze-text', dir: 'auto' });
+    // "code": true shows the text as a code block (keeps spaces and lines, left-to-right).
+    const mono = q.code === true;
+    const sentence = mono ? h('pre', { class: 'code cloze-code', dir: 'ltr', lang: 'en' }) : h('p', { class: 'cloze-text', dir: 'auto' });
     parts(text).forEach((p, i) => {
-      if (i % 2 === 0) sentence.append(p);
+      if (i % 2 === 0) sentence.append(...(mono ? highlight(p) : [p]));
       else {
         const idx = slots.length;
         const s = h('button', { class: 'cloze-slot empty', onclick: () => unplace(idx) });
@@ -84,7 +87,10 @@ export const cloze: GameType = {
       },
     }, ctx.t('check'));
 
-    el.append(h('p', { class: 'muted small' }, ctx.t('clozeHint')), sentence, bank, h('div', { class: 'actions' }, checkBtn));
+    el.append(
+      h('p', { class: 'muted small' }, ctx.t('clozeHint')),
+      typeof q.prompt === 'string' ? h('p', { class: 'q-text', dir: 'auto' }, q.prompt) : '',
+      sentence, bank, h('div', { class: 'actions' }, checkBtn));
     draw();
   },
 };

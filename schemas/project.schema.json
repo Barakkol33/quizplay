@@ -85,7 +85,9 @@
                     "match",
                     "categorize",
                     "order",
-                    "flashcards"
+                    "flashcards",
+                    "output",
+                    "code"
                   ]
                 },
                 "file": {

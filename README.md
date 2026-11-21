@@ -7,6 +7,8 @@ A general app for learning through games. Content comes as **projects** made of 
 - **Project → subjects → games → questions.** Each game has one type.
 - **Learn, then play:** a subject can open with a **lesson** (short reading pages), followed by games that test it.
 - **Game types:** lesson (`lesson`), multiple choice (`mcq`), select all that apply (`multi`), true/false (`truefalse`), type the answer (`typein`), fill the blanks (`cloze`), match pairs (`match`), sort into groups (`categorize`), put in order (`order`), flashcards (`flashcards`).
+- **Code:** questions can show code (`code`), "what does it print?" games (`output`), and **write-and-run Java in the browser** (`code`): CheerpJ runs Java 8 in WebAssembly and ECJ compiles it, with keyboard input for `Scanner`. `npm run check-java` runs every expected output and solution with a real JDK.
+- **👍/👎 ratings** on every question, with an optional comment. Players export them from the profile page (Excel/JSON) and send them to the author.
 - **Mixed practice:** a round drawn from every game in a project or subject, starting with questions you got wrong and questions you haven't seen.
 - **Gamification:** score with streak multiplier, hearts, an optional timer, 1–3 stars per game, XP and levels, confetti.
 - **Mistakes are remembered** for each user: a "My mistakes" page per project, and a practice round built from them. A question leaves practice after two correct answers in a row.

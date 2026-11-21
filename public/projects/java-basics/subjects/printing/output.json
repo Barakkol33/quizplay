@@ -1,0 +1,116 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "output",
+  "title": "מה יודפס? הדפסות",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "print-println",
+      "code": "System.out.print(\"A\");\nSystem.out.println(\"B\");\nSystem.out.print(\"C\");",
+      "output": "AB\nC",
+      "explanation": "print לא יורד שורה, println יורד שורה אחרי ההדפסה."
+    },
+    {
+      "id": "num-num-str",
+      "code": "System.out.println(1 + 2 + \"3\");",
+      "output": "33",
+      "explanation": "משמאל לימין: 1+2=3 (חיבור), ואז 3+\"3\" = \"33\" (שרשור)."
+    },
+    {
+      "id": "str-num-num",
+      "code": "System.out.println(\"1\" + 2 + 3);",
+      "output": "123",
+      "explanation": "מתחילים במחרוזת, אז הכול שרשור: \"12\" ואז \"123\"."
+    },
+    {
+      "id": "sum-no-parens",
+      "code": "System.out.println(\"Sum: \" + 2 + 3);",
+      "output": "Sum: 23",
+      "options": [
+        "Sum: 23",
+        "Sum: 5",
+        "Sum: 2 3",
+        "שגיאת קומפילציה"
+      ],
+      "explanation": "בלי סוגריים, \"Sum: \"+2 הופך למחרוזת, ואז מדביקים 3."
+    },
+    {
+      "id": "sum-parens",
+      "code": "System.out.println(\"Sum: \" + (2 + 3));",
+      "output": "Sum: 5"
+    },
+    {
+      "id": "char-plus",
+      "code": "System.out.println('a' + 1);",
+      "output": "98",
+      "options": [
+        "98",
+        "b",
+        "a1",
+        "97"
+      ],
+      "explanation": "char ועוד int הוא int: הקוד של 'a' הוא 97, ועוד 1 = 98."
+    },
+    {
+      "id": "char-cast",
+      "code": "System.out.println((char) ('a' + 1));",
+      "output": "b",
+      "explanation": "המרה ל-char הופכת את 98 בחזרה לתו: b."
+    },
+    {
+      "id": "newline",
+      "code": "System.out.println(\"Line1\\nLine2\");",
+      "output": "Line1\nLine2"
+    },
+    {
+      "id": "quotes",
+      "code": "System.out.println(\"He said \\\"hi\\\"\");",
+      "output": "He said \"hi\""
+    },
+    {
+      "id": "printf-2f",
+      "code": "System.out.printf(\"%.2f%n\", 3.14159);",
+      "output": "3.14"
+    },
+    {
+      "id": "printf-d",
+      "code": "System.out.printf(\"%d + %d = %d%n\", 2, 3, 2 + 3);",
+      "output": "2 + 3 = 5"
+    },
+    {
+      "id": "printf-width",
+      "code": "System.out.printf(\"[%5d]%n\", 42);",
+      "output": "[   42]",
+      "options": [
+        "[   42]",
+        "[42   ]",
+        "[00042]",
+        "[42]"
+      ],
+      "explanation": "%5d תופס 5 תווים ומיישר לימין: שלושה רווחים ואז 42."
+    },
+    {
+      "id": "printf-zero",
+      "code": "System.out.printf(\"%05d%n\", 42);",
+      "output": "00042"
+    },
+    {
+      "id": "mixed-concat",
+      "code": "System.out.println(10 + 20 + \"\" + 10 + 20);",
+      "output": "301020",
+      "explanation": "10+20=30 עוד לפני המחרוזת הריקה. אחריה הכול שרשור: \"30\"+\"10\"+\"20\"."
+    },
+    {
+      "id": "div-concat",
+      "code": "System.out.println(5 / 2 + \" \" + 5 / 2.0);",
+      "output": "2 2.5"
+    },
+    {
+      "id": "length",
+      "code": "String s = \"Java\";\nSystem.out.println(s + s.length());",
+      "output": "Java4"
+    }
+  ]
+}

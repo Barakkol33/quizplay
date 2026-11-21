@@ -14,8 +14,13 @@ The plan for what comes next. When told **"continue"**, take the first unchecked
 - [x] Games: cloze (fill the blanks), categorize (sort into groups), multi (select all)
 - [x] Mixed practice (interleaving) per project and per subject
 - [x] DevOps sample project from blearning; small Hebrew sample
+- [x] Code in questions, `output` (what does it print?) and `code` (write and run Java in the browser, with Scanner input); `npm run check-java`
+- [x] 👍/👎 ratings with comments, exported from the profile page
+- [x] Java basics project (Hebrew): printing, arithmetic, Random, small programs, coding
 
 ## Next up
+
+0. [ ] **Java project, more subjects:** variables and types (naming rules, primitive types), Scanner input (output questions with `input` + exercises), conditions (if, else if, switch, &&, ||, !), chars and strings (char arithmetic, length, charAt, substring, equals vs ==), basic computer concepts (input/processing/output, hardware, CPU, memory, compiler).
 
 1. [ ] **Spaced repetition.** Give each question a Leitner box (1–5). A correct answer moves it up a box, a wrong one sends it back to box 1. Box n is due after 1, 2, 4, 8, 16 days. Show "Today's review: N questions" on the home page and on each project, and build the round from questions that are due. Store `box` and `due` in `QStat` (`src/store.ts`).
 2. [ ] **Daily streak and goal.** Count days in a row with at least one round, with a daily goal (e.g. 30 XP). Show 🔥 days on the home banner. Store the last-played date in the user.

@@ -1,0 +1,102 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "mcq",
+  "title": "הדפסות: שאלות",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "println-vs-print",
+      "question": "מה ההבדל בין println ל-print?",
+      "options": [
+        "println יורד שורה אחרי ההדפסה, print לא",
+        "print יורד שורה, println לא",
+        "println מדפיס רק מספרים",
+        "אין הבדל"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "printf-newline",
+      "question": "מה חסר כאן כדי שההדפסה הבאה תתחיל בשורה חדשה?",
+      "code": "System.out.printf(\"x = %d\", x);",
+      "options": [
+        "%n (או \\n) בסוף התבנית",
+        "נקודה-פסיק נוספת",
+        "להחליף את %d ב-%s",
+        "שום דבר, printf יורד שורה לבד"
+      ],
+      "answer": 0,
+      "explanation": "printf לא יורד שורה לבד, צריך %n בסוף."
+    },
+    {
+      "id": "fmt-2dec",
+      "question": "איזו תבנית מדפיסה מספר עשרוני עם שתי ספרות אחרי הנקודה?",
+      "options": [
+        "%.2f",
+        "%2d",
+        "%f2",
+        "%.2d"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "fmt-string",
+      "question": "איזה מציין מתאים להדפסת מחרוזת ב-printf?",
+      "options": [
+        "%s",
+        "%d",
+        "%c",
+        "%f"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "fmt-mismatch",
+      "question": "מה יקרה כאן?",
+      "code": "System.out.printf(\"%d%n\", 3.5);",
+      "options": [
+        "שגיאה בזמן ריצה: %d לא מתאים ל-double",
+        "יודפס 3",
+        "יודפס 4",
+        "יודפס 3.5"
+      ],
+      "answer": 0,
+      "explanation": "הקוד מתקמפל, אבל בזמן ריצה נזרקת IllegalFormatConversionException."
+    },
+    {
+      "id": "escape-quote",
+      "question": "איך מדפיסים גרשיים בתוך מחרוזת?",
+      "options": [
+        "\\\"",
+        "\"\"",
+        "'\"'",
+        "/\""
+      ],
+      "answer": 0
+    },
+    {
+      "id": "concat-fix",
+      "question": "רוצים שיודפס Total: 7. איזו שורה נכונה?",
+      "options": [
+        "System.out.println(\"Total: \" + (3 + 4));",
+        "System.out.println(\"Total: \" + 3 + 4);",
+        "System.out.println(\"Total: \" - 3 + 4);",
+        "System.out.println(Total: + 3 + 4);"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "char-int",
+      "question": "מה הטיפוס של הביטוי 'a' + 1?",
+      "options": [
+        "int",
+        "char",
+        "String",
+        "double"
+      ],
+      "answer": 0
+    }
+  ]
+}

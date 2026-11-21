@@ -1,13 +1,16 @@
 import { h } from '../dom';
 import type { Question } from '../types';
 import type { Ctx } from './types';
+import { codeBlock } from './code';
 
+/** The question text, plus an optional image and an optional code block (`code`). */
 export function questionBlock(text: string, q: Question, ctx: Ctx): HTMLElement {
   return h(
     'div',
     { class: 'q' },
     q.image ? h('img', { class: 'q-img', src: ctx.asset(q.image), alt: '' }) : null,
     h('p', { class: 'q-text', dir: 'auto' }, text),
+    typeof q.code === 'string' ? codeBlock(q.code) : null,
   );
 }
 

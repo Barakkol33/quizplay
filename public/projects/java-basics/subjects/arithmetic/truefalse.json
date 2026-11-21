@@ -1,0 +1,55 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "truefalse",
+  "title": "נכון או לא נכון: חשבון",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "int-assign",
+      "statement": "השורה int x = 3.5; מתקמפלת, ו-x יהיה 3.",
+      "code": "int x = 3.5;",
+      "answer": false,
+      "explanation": "זו שגיאת קומפילציה. צריך המרה מפורשת: (int) 3.5."
+    },
+    {
+      "id": "double-assign",
+      "statement": "השורה double d = 3; תקינה, ו-d יהיה 3.0.",
+      "answer": true
+    },
+    {
+      "id": "cast-rounds",
+      "statement": "(int) 2.9 שווה 3, כי ההמרה מעגלת.",
+      "answer": false,
+      "explanation": "המרה ל-int חותכת: התוצאה 2. לעיגול משתמשים ב-Math.round."
+    },
+    {
+      "id": "int-div-zero",
+      "statement": "חילוק int באפס (למשל 10 / 0) זורק ArithmeticException בזמן ריצה.",
+      "answer": true
+    },
+    {
+      "id": "pow-int",
+      "statement": "Math.pow(2, 3) מחזיר int.",
+      "answer": false,
+      "explanation": "הוא מחזיר double: 8.0."
+    },
+    {
+      "id": "mod-even",
+      "statement": "n % 2 == 0 בודק אם n זוגי.",
+      "answer": true
+    },
+    {
+      "id": "precedence",
+      "statement": "הביטוי 10 - 4 - 3 שווה 9.",
+      "answer": false,
+      "explanation": "משמאל לימין: (10-4)-3 = 3."
+    },
+    {
+      "id": "post-inc",
+      "statement": "אחרי int a = 5; int b = a++; הערך של b הוא 5.",
+      "answer": true
+    }
+  ]
+}

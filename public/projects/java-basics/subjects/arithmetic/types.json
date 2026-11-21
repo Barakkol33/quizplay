@@ -1,0 +1,42 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "categorize",
+  "title": "מה הטיפוס של התוצאה?",
+  "settings": {
+    "lives": 0
+  },
+  "questions": [
+    {
+      "id": "result-type",
+      "prompt": "לאיזה טיפוס שייכת התוצאה?",
+      "groups": [
+        {
+          "name": "int",
+          "items": [
+            "5 / 2",
+            "'a' + 1",
+            "(int) 3.9",
+            "10 % 3"
+          ]
+        },
+        {
+          "name": "double",
+          "items": [
+            "5 / 2.0",
+            "Math.sqrt(9)",
+            "Math.pow(2, 2)",
+            "Math.max(2, 3.0)"
+          ]
+        },
+        {
+          "name": "String",
+          "items": [
+            "\"5\" + 2",
+            "\"\" + 3 + 4"
+          ]
+        }
+      ],
+      "explanation": "אם יש double בחישוב, התוצאה double. אם יש מחרוזת עם +, התוצאה String."
+    }
+  ]
+}

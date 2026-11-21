@@ -1,0 +1,32 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "output",
+  "title": "מה יודפס? (כן, גם עם אקראיות)",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "trap-zero",
+      "code": "System.out.println((int) Math.random() * 10);",
+      "output": "0",
+      "explanation": "תמיד 0: ההמרה ל-int קורית לפני הכפל."
+    },
+    {
+      "id": "nextint-one",
+      "code": "Random rnd = new Random();\nSystem.out.println(rnd.nextInt(1));",
+      "output": "0",
+      "explanation": "nextInt(1) נותן 0 עד 0, כלומר תמיד 0."
+    },
+    {
+      "id": "times-one",
+      "code": "System.out.println((int) (Math.random() * 1) + 5);",
+      "output": "5"
+    },
+    {
+      "id": "nextint-range-check",
+      "code": "Random rnd = new Random();\nint x = rnd.nextInt(6) + 1;\nSystem.out.println(x >= 1 && x <= 6);",
+      "output": "true"
+    }
+  ]
+}

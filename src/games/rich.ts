@@ -1,4 +1,5 @@
 import { h } from '../dom';
+import { codeBlock } from './code';
 
 /** Inline: **bold**, `code`. Built as DOM nodes, never as HTML. */
 function inline(text: string): (Node | string)[] {
@@ -20,7 +21,17 @@ function inline(text: string): (Node | string)[] {
  */
 export function richText(text: string): HTMLElement {
   const root = h('div', { class: 'rich', dir: 'auto' });
-  for (const block of text.replace(/\r/g, '').split(/\n\s*\n/)) {
+  // ```fenced code``` blocks first: they may contain blank lines.
+  const pieces = text.replace(/\r/g, '').split(/^```[^\n]*\n([\s\S]*?)^```[ \t]*$/m);
+  pieces.forEach((piece, i) => {
+    if (i % 2 === 1) root.append(codeBlock(piece));
+    else if (piece.trim()) appendBlocks(root, piece);
+  });
+  return root;
+}
+
+function appendBlocks(root: HTMLElement, text: string): void {
+  for (const block of text.split(/\n\s*\n/)) {
     const lines = block.split('\n').filter((l) => l.trim());
     if (!lines.length) continue;
     if (lines.every((l) => /^\s*[-*] /.test(l))) {
@@ -39,5 +50,4 @@ export function richText(text: string): HTMLElement {
       root.append(p);
     }
   }
-  return root;
 }

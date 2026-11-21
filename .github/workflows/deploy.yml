@@ -24,8 +24,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 8
       - run: npm ci
       - run: npm run validate
+      - run: npm run check-java
       - run: npm run build
       - run: cp -r schemas dist/schemas
       - uses: actions/upload-pages-artifact@v3

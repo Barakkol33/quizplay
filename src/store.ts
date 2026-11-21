@@ -21,10 +21,21 @@ export interface GStat {
   plays: number;
 }
 
+export interface Rating {
+  /** 1 = 👍, -1 = 👎 */
+  v: 1 | -1;
+  at: number;
+  comment?: string;
+  /** Snapshot of the question, so an export makes sense on its own. */
+  type: string;
+  prompt: string;
+}
+
 export interface User {
   xp: number;
   games: Record<string, GStat>;
   questions: Record<string, QStat>;
+  ratings?: Record<string, Rating>;
 }
 
 interface State {
@@ -56,7 +67,7 @@ function load(): State {
   }
   const uiLang: Lang = 'he';
   const name = 'שחקן';
-  return { v: 1, current: name, users: { [name]: emptyUser() }, uiLang, muted: false, customUrls: [], theme: 'auto' };
+  return { v: 1, current: name, users: { [name]: emptyUser() }, uiLang, muted: true, customUrls: [], theme: 'auto' };
 }
 
 let state = load();
@@ -191,6 +202,59 @@ export function removeCustomUrl(url: string): void {
   save();
 }
 
+// ---------- ratings (👍 / 👎 on questions) ----------
+
+export function rating(pid: string, gid: string, qid: string): Rating | undefined {
+  return user().ratings?.[qKey(pid, gid, qid)];
+}
+
+/** v = 0 removes the rating. */
+export function setRating(pid: string, gid: string, qid: string, v: 1 | -1 | 0, snapshot: { type: string; prompt: string }): void {
+  const u = user();
+  u.ratings ??= {};
+  const k = qKey(pid, gid, qid);
+  if (v === 0) delete u.ratings[k];
+  else u.ratings[k] = { ...u.ratings[k], v, at: Date.now(), type: snapshot.type, prompt: snapshot.prompt };
+  save();
+}
+
+export function setRatingComment(pid: string, gid: string, qid: string, comment: string): void {
+  const r = user().ratings?.[qKey(pid, gid, qid)];
+  if (!r) return;
+  r.comment = comment.trim() || undefined;
+  save();
+}
+
+export function ratingRows(): { project: string; game: string; question: string; type: string; rating: string; comment: string; prompt: string; date: string }[] {
+  return Object.entries(user().ratings ?? {})
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([k, r]) => {
+      const [project, game, ...rest] = k.split('/');
+      return {
+        project, game, question: rest.join('/'), type: r.type,
+        rating: r.v === 1 ? 'up' : 'down', comment: r.comment ?? '', prompt: r.prompt,
+        date: new Date(r.at).toISOString().slice(0, 16).replace('T', ' '),
+      };
+    });
+}
+
+/** CSV with a BOM so Excel shows Hebrew correctly. */
+export function ratingsCsv(): string {
+  const rows = ratingRows();
+  const cols = ['project', 'game', 'question', 'type', 'rating', 'comment', 'prompt', 'date'] as const;
+  const esc = (s: string) => (/[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s);
+  return '﻿' + [cols.join(','), ...rows.map((r) => cols.map((c) => esc(r[c])).join(','))].join('\r\n') + '\r\n';
+}
+
+export function ratingsJson(): string {
+  return JSON.stringify({ app: 'quizplay', kind: 'ratings', exportedAt: new Date().toISOString(), name: state.current, ratings: ratingRows() }, null, 2);
+}
+
+export function clearRatings(): void {
+  user().ratings = {};
+  save();
+}
+
 export function exportJson(): string {
   return JSON.stringify({ app: 'quizplay', exportedAt: new Date().toISOString(), name: state.current, user: user() }, null, 2);
 }
@@ -200,7 +264,7 @@ export function importJson(text: string): string {
   const data = JSON.parse(text) as { app?: string; name?: string; user?: User };
   if (data.app !== 'quizplay' || !data.user || typeof data.name !== 'string') throw new Error('Not a quizplay export');
   const u = data.user;
-  state.users[data.name] = { xp: Number(u.xp) || 0, games: u.games ?? {}, questions: u.questions ?? {} };
+  state.users[data.name] = { xp: Number(u.xp) || 0, games: u.games ?? {}, questions: u.questions ?? {}, ratings: u.ratings ?? {} };
   state.current = data.name;
   save();
   return data.name;

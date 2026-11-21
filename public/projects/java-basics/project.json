@@ -1,0 +1,69 @@
+{
+  "$schema": "../../../schemas/project.schema.json",
+  "id": "java-basics",
+  "title": "Java בסיסי: חשבון, אקראיות והדפסות",
+  "lang": "he",
+  "icon": "☕",
+  "description": "הדפסות, פעולות חשבון, Math, מספרים אקראיים ותוכניות קטנות. כולל כתיבת קוד והרצה אמיתית בדפדפן.",
+  "subjects": [
+    {
+      "id": "printing",
+      "title": "הדפסות",
+      "icon": "🖨️",
+      "description": "println, print, שרשור מחרוזות ו-printf",
+      "games": [
+        { "id": "print-lesson", "title": "שיעור: הדפסות", "type": "lesson", "file": "subjects/printing/lesson.json" },
+        { "id": "print-output", "title": "מה יודפס? הדפסות", "type": "output", "file": "subjects/printing/output.json" },
+        { "id": "print-quiz", "title": "הדפסות: שאלות", "type": "mcq", "file": "subjects/printing/quiz.json" },
+        { "id": "print-cloze", "title": "השלימו את הקוד", "type": "cloze", "file": "subjects/printing/cloze.json" }
+      ]
+    },
+    {
+      "id": "arithmetic",
+      "title": "פעולות חשבון",
+      "icon": "➗",
+      "description": "int ו-double, חילוק ושארית, סדר פעולות, המרות ו-Math",
+      "games": [
+        { "id": "math-lesson", "title": "שיעור: פעולות חשבון", "type": "lesson", "file": "subjects/arithmetic/lesson.json" },
+        { "id": "math-output", "title": "מה יודפס? חשבון", "type": "output", "file": "subjects/arithmetic/output.json" },
+        { "id": "math-tf", "title": "נכון או לא נכון", "type": "truefalse", "file": "subjects/arithmetic/truefalse.json" },
+        { "id": "math-types", "title": "מה הטיפוס של התוצאה?", "type": "categorize", "file": "subjects/arithmetic/types.json" },
+        { "id": "math-match", "title": "Math: מה התוצאה?", "type": "match", "file": "subjects/arithmetic/match.json" }
+      ]
+    },
+    {
+      "id": "random",
+      "title": "מספרים אקראיים",
+      "icon": "🎲",
+      "description": "Math.random, המחלקה Random, טווחים ומלכודות",
+      "games": [
+        { "id": "rnd-lesson", "title": "שיעור: מספרים אקראיים", "type": "lesson", "file": "subjects/random/lesson.json" },
+        { "id": "rnd-ranges", "title": "טווחים: מה יכול לצאת?", "type": "mcq", "file": "subjects/random/ranges.json" },
+        { "id": "rnd-multi", "title": "אילו ערכים אפשריים?", "type": "multi", "file": "subjects/random/possible.json" },
+        { "id": "rnd-match", "title": "ביטוי וטווח", "type": "match", "file": "subjects/random/match.json" },
+        { "id": "rnd-cloze", "title": "השלימו את הקוד", "type": "cloze", "file": "subjects/random/cloze.json" },
+        { "id": "rnd-output", "title": "מה יודפס?", "type": "output", "file": "subjects/random/output.json" }
+      ]
+    },
+    {
+      "id": "programs",
+      "title": "תוכניות קטנות",
+      "icon": "🧩",
+      "description": "לולאות ותנאים עם חשבון: מעקב אחרי קוד וסידור שורות",
+      "games": [
+        { "id": "prog-output", "title": "מעקב אחרי תוכנית", "type": "output", "file": "subjects/programs/output.json" },
+        { "id": "prog-order", "title": "סדרו את שורות התוכנית", "type": "order", "file": "subjects/programs/order.json" }
+      ]
+    },
+    {
+      "id": "coding",
+      "title": "כתיבת קוד והרצה",
+      "icon": "💻",
+      "description": "כותבים Java ומריצים בדפדפן. ההרצה הראשונה טוענת את Java (כ-20MB).",
+      "games": [
+        { "id": "code-exercises", "title": "תרגילי קוד", "type": "code", "file": "subjects/coding/exercises.json" },
+        { "id": "code-sandbox", "title": "ארגז חול", "type": "code", "file": "subjects/coding/sandbox.json" }
+      ]
+    }
+  ]
+}

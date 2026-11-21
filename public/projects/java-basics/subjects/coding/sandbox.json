@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "code",
+  "title": "ארגז חול",
+  "settings": {
+    "lives": 0
+  },
+  "questions": [
+    {
+      "id": "free",
+      "prompt": "**ארגז חול:** כתבו כל תוכנית שתרצו והריצו אותה. אין בדיקה, רק להתנסות.",
+      "starter": "import java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        Random rnd = new Random();\n        System.out.println(\"Hello!\");\n        System.out.println(7 / 2 + \" \" + 7 / 2.0);\n        System.out.printf(\"%.2f%n\", Math.PI);\n        System.out.println(rnd.nextInt(6) + 1);\n    }\n}\n",
+      "showExpected": false
+    }
+  ]
+}

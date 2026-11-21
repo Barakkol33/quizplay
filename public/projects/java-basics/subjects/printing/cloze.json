@@ -1,0 +1,51 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "cloze",
+  "title": "השלימו את הקוד: הדפסות",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "printf-avg",
+      "prompt": "רוצים שיודפס: Average: 8.33",
+      "code": true,
+      "text": "double avg = 25 / 3.0;\nSystem.out.{{printf}}(\"Average: {{%.2f}}%n\", avg);",
+      "extra": [
+        "println",
+        "%d",
+        "%s"
+      ]
+    },
+    {
+      "id": "println-sum",
+      "prompt": "רוצים שיודפס: 3 + 4 = 7",
+      "code": true,
+      "text": "int a = 3, b = 4;\nSystem.out.println(a + \" + \" + b + \" = \" + {{(a + b)}});",
+      "extra": [
+        "a + b",
+        "\"a + b\""
+      ]
+    },
+    {
+      "id": "printf-name",
+      "prompt": "רוצים שיודפס: Hi Dana, you are 12",
+      "code": true,
+      "text": "String name = \"Dana\";\nint age = 12;\nSystem.out.printf(\"Hi {{%s}}, you are {{%d}}%n\", name, age);",
+      "extra": [
+        "%f",
+        "%n"
+      ]
+    },
+    {
+      "id": "two-lines",
+      "prompt": "רוצים שתי שורות: Hello ואז World",
+      "code": true,
+      "text": "System.out.print(\"Hello{{\\n}}World{{\\n}}\");",
+      "extra": [
+        "\\t",
+        " "
+      ]
+    }
+  ]
+}

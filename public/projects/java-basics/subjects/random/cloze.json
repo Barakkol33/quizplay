@@ -1,0 +1,42 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "cloze",
+  "title": "השלימו את הקוד: אקראיות",
+  "settings": {
+    "lives": 3
+  },
+  "questions": [
+    {
+      "id": "dice",
+      "prompt": "קוביה: מספר בין 1 ל-6",
+      "code": true,
+      "text": "{{import}} java.util.Random;\n...\nRandom rnd = new Random();\nint dice = rnd.{{nextInt}}(6) {{+ 1}};",
+      "extra": [
+        "nextDouble",
+        "- 1",
+        "include"
+      ]
+    },
+    {
+      "id": "range-20-30",
+      "prompt": "מספר בין 20 ל-30 (כולל) בעזרת Math.random",
+      "code": true,
+      "text": "int x = (int) (Math.random() * {{11}}) + {{20}};",
+      "extra": [
+        "10",
+        "30",
+        "21"
+      ]
+    },
+    {
+      "id": "coin",
+      "prompt": "מטבע: מדפיסים Heads או Tails",
+      "code": true,
+      "text": "if (rnd.{{nextBoolean}}()) {\n    System.out.println(\"Heads\");\n} {{else}} {\n    System.out.println(\"Tails\");\n}",
+      "extra": [
+        "nextInt",
+        "then"
+      ]
+    }
+  ]
+}

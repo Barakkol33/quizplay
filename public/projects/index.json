@@ -1,5 +1,13 @@
 [
   {
+    "id": "java-basics",
+    "title": "Java בסיסי: חשבון, אקראיות והדפסות",
+    "lang": "he",
+    "path": "java-basics/",
+    "description": "הדפסות, פעולות חשבון, Math, מספרים אקראיים ותוכניות קטנות. כולל כתיבת קוד והרצה אמיתית בדפדפן.",
+    "icon": "☕"
+  },
+  {
     "id": "devops",
     "title": "DevOps fundamentals",
     "lang": "en",

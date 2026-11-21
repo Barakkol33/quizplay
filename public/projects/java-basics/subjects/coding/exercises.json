@@ -1,0 +1,131 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "code",
+  "title": "תרגילי קוד",
+  "settings": {
+    "lives": 0,
+    "shuffle": false
+  },
+  "questions": [
+    {
+      "id": "hello",
+      "prompt": "הדפיסו בדיוק: **Hello, Java!**",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "Hello, Java!",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}\n"
+    },
+    {
+      "id": "div-mod",
+      "prompt": "הדפיסו את התוצאה של **17 חלקי 5** (חילוק שלמים) ובשורה הבאה את **השארית**.",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "3\n2",
+      "hint": "חילוק שלמים: `/`. שארית: `%`.",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(17 / 5);\n        System.out.println(17 % 5);\n    }\n}\n"
+    },
+    {
+      "id": "average",
+      "prompt": "חשבו והדפיסו את **הממוצע** של 7, 8 ו-10 כ-double.",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "8.333333333333334",
+      "hint": "אם מחלקים ב-`3` מקבלים חילוק שלמים. נסו `3.0`.",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        int a = 7, b = 8, c = 10;\n        System.out.println((a + b + c) / 3.0);\n    }\n}\n"
+    },
+    {
+      "id": "average-2",
+      "prompt": "אותו ממוצע של 7, 8 ו-10, אבל **מעוגל לשתי ספרות אחרי הנקודה** (8.33).",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "8.33",
+      "hint": "כופלים ב-100, מעגלים עם `Math.round`, ומחלקים ב-`100.0`. (אפשר גם `printf` עם `%.2f`.)",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        double avg = (7 + 8 + 10) / 3.0;\n        System.out.println(Math.round(avg * 100) / 100.0);\n    }\n}\n"
+    },
+    {
+      "id": "circle",
+      "prompt": "הדפיסו את **שטח העיגול** שרדיוסו 2.5, מעוגל לשתי ספרות אחרי הנקודה (19.63). שטח = π·r²",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "19.63",
+      "hint": "`Math.PI * r * r`, ואז אותו טריק עיגול: `Math.round(x * 100) / 100.0`",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        double r = 2.5;\n        double area = Math.PI * r * r;\n        System.out.println(Math.round(area * 100) / 100.0);\n    }\n}\n"
+    },
+    {
+      "id": "max3",
+      "prompt": "הדפיסו את **הגדול** מבין 12, 45 ו-7 בעזרת `Math.max`.",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "45",
+      "hint": "אפשר לקנן: `Math.max(a, Math.max(b, c))`",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(Math.max(12, Math.max(45, 7)));\n    }\n}\n"
+    },
+    {
+      "id": "time",
+      "prompt": "המירו **3725 שניות** לשעות, דקות ושניות, והדפיסו בפורמט **1:2:5** (שעות:דקות:שניות).",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "1:2:5",
+      "hint": "שעות: `t / 3600`. דקות: `t % 3600 / 60`. שניות: `t % 60`.",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        int t = 3725;\n        System.out.println(t / 3600 + \":\" + t % 3600 / 60 + \":\" + t % 60);\n    }\n}\n"
+    },
+    {
+      "id": "scanner-sum",
+      "prompt": "**קלט:** קראו שני מספרים שלמים מהמשתמש בעזרת `Scanner`, והדפיסו את הסכום שלהם. (הקלט לבדיקה: 7 ו-5.)",
+      "input": "7\n5",
+      "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scan = new Scanner(System.in);\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "12",
+      "hint": "`int a = scan.nextInt();`",
+      "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scan = new Scanner(System.in);\n        int a = scan.nextInt();\n        int b = scan.nextInt();\n        System.out.println(a + b);\n    }\n}\n"
+    },
+    {
+      "id": "digit-sum",
+      "prompt": "הדפיסו את **סכום הספרות** של 4729 בעזרת `%` ו-`/` (בלי להפוך למחרוזת).",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "22",
+      "hint": "לולאת `while (n > 0)`: מוסיפים `n % 10`, ואז `n /= 10`.",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        int n = 4729, sum = 0;\n        while (n > 0) {\n            sum += n % 10;\n            n /= 10;\n        }\n        System.out.println(sum);\n    }\n}\n"
+    },
+    {
+      "id": "table",
+      "prompt": "הדפיסו את **לוח הכפל של 7** מ-1 עד 5, כל שורה בפורמט: `7 x 1 = 7`",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35",
+      "hint": "לולאת `for` מ-1 עד 5.",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 5; i++) {\n            System.out.println(\"7 x \" + i + \" = \" + (7 * i));\n        }\n    }\n}\n"
+    },
+    {
+      "id": "even-odd",
+      "prompt": "לכל מספר מ-1 עד 5 הדפיסו שורה כמו `1 odd` או `2 even`.",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "expected": "1 odd\n2 even\n3 odd\n4 even\n5 odd",
+      "hint": "`if (i % 2 == 0)`",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 5; i++) {\n            if (i % 2 == 0) {\n                System.out.println(i + \" even\");\n            } else {\n                System.out.println(i + \" odd\");\n            }\n        }\n    }\n}\n"
+    },
+    {
+      "id": "dice",
+      "prompt": "**קוביה:** הגרילו מספר שלם בין 1 ל-6 והדפיסו אותו. (הבדיקה מקבלת כל מספר בטווח.)",
+      "starter": "import java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        Random rnd = new Random();\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "pattern": "^[1-6]$",
+      "hint": "`rnd.nextInt(6) + 1`",
+      "solution": "import java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        Random rnd = new Random();\n        System.out.println(rnd.nextInt(6) + 1);\n    }\n}\n"
+    },
+    {
+      "id": "five-random",
+      "prompt": "הדפיסו **5 מספרים אקראיים בין 10 ל-20** (כולל), כל אחד בשורה משלו.",
+      "starter": "import java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        Random rnd = new Random();\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "pattern": "^(1[0-9]|20)(\\n(1[0-9]|20)){4}$",
+      "hint": "כמה ערכים יש בין 10 ל-20? `rnd.nextInt(...) + 10` בתוך לולאה.",
+      "solution": "import java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        Random rnd = new Random();\n        for (int i = 0; i < 5; i++) {\n            System.out.println(rnd.nextInt(11) + 10);\n        }\n    }\n}\n"
+    },
+    {
+      "id": "coin",
+      "prompt": "**מטבע:** הדפיסו באקראי `Heads` או `Tails`.",
+      "starter": "import java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        Random rnd = new Random();\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "pattern": "^(Heads|Tails)$",
+      "hint": "`rnd.nextBoolean()` או `rnd.nextInt(2) == 0`",
+      "solution": "import java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        Random rnd = new Random();\n        if (rnd.nextBoolean()) {\n            System.out.println(\"Heads\");\n        } else {\n            System.out.println(\"Tails\");\n        }\n    }\n}\n"
+    },
+    {
+      "id": "math-random-range",
+      "prompt": "בלי המחלקה Random: הגרילו בעזרת **Math.random()** מספר שלם בין **50 ל-60** (כולל) והדפיסו אותו.",
+      "starter": "public class Main {\n    public static void main(String[] args) {\n        // כתבו כאן את הקוד\n    }\n}\n",
+      "pattern": "^(5[0-9]|60)$",
+      "hint": "`(int) (Math.random() * 11) + 50`. שימו לב לסוגריים!",
+      "solution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println((int) (Math.random() * 11) + 50);\n    }\n}\n"
+    }
+  ]
+}

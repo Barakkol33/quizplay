@@ -1,0 +1,47 @@
+{
+  "$schema": "../../../../../schemas/game.schema.json",
+  "type": "order",
+  "title": "סדרו את שורות התוכנית",
+  "settings": {
+    "lives": 0
+  },
+  "questions": [
+    {
+      "id": "dice-program",
+      "prompt": "סדרו את השורות לתוכנית שמגרילה קוביה ומדפיסה אותה",
+      "items": [
+        "import java.util.Random;",
+        "public class Main {",
+        "public static void main(String[] args) {",
+        "Random rnd = new Random();",
+        "int dice = rnd.nextInt(6) + 1;",
+        "System.out.println(dice);",
+        "}",
+        "}"
+      ]
+    },
+    {
+      "id": "digit-sum-program",
+      "prompt": "סדרו את השורות לחישוב סכום הספרות של 4729",
+      "items": [
+        "int n = 4729, sum = 0;",
+        "while (n > 0) {",
+        "sum += n % 10;",
+        "n /= 10;",
+        "}",
+        "System.out.println(sum);"
+      ]
+    },
+    {
+      "id": "swap-program",
+      "prompt": "סדרו את השורות להחלפת הערכים של a ו-b",
+      "items": [
+        "int a = 3, b = 7;",
+        "int temp = a;",
+        "a = b;",
+        "b = temp;",
+        "System.out.println(a + \" \" + b);"
+      ]
+    }
+  ]
+}

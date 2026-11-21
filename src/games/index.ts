@@ -9,8 +9,10 @@ import { categorize } from './categorize';
 import { order } from './order';
 import { flashcards } from './flashcards';
 import { lesson } from './lesson';
+import { output } from './output';
+import { code } from './codeRun';
 
 /** Register new game types here. */
 export const gameTypes: Record<string, GameType> = Object.fromEntries(
-  [lesson, mcq, multi, truefalse, typein, cloze, match, categorize, order, flashcards].map((g) => [g.type, g]),
+  [lesson, mcq, multi, truefalse, typein, cloze, match, categorize, order, flashcards, output, code].map((g) => [g.type, g]),
 );
