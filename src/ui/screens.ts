@@ -98,6 +98,15 @@ function topbar(...crumbs: { text: string; href?: string }[]): HTMLElement {
 
 const starsText = (n: number) => '★'.repeat(n) + '☆'.repeat(3 - n);
 
+/** A project's notice (e.g. "may contain mistakes, write to …"); email addresses become mailto links. */
+function noticeView(text: string | undefined, lang: Lang): HTMLElement | null {
+  if (!text) return null;
+  const parts = text.split(/(\w[\w.+-]*@[\w-]+(?:\.[\w-]+)+)/);
+  return h('div', { class: 'notice', role: 'note', lang, dir: dirOf(lang) },
+    h('span', { class: 'notice-icon', 'aria-hidden': 'true' }, 'ℹ️'),
+    h('p', {}, parts.map((p, i) => (i % 2 ? h('a', { href: 'mailto:' + p, dir: 'ltr' }, p) : p))));
+}
+
 function page(root: HTMLElement, header: HTMLElement, ...content: (Node | null)[]): void {
   setLang(store.uiLang());
   clear(root).append(header, h('main', { class: 'main' }, ...content));
@@ -182,6 +191,7 @@ export async function renderProject(root: HTMLElement, pid: string): Promise<voi
         h('a', { class: 'btn on-banner', href: link.mistakes(pid) }, `📝 ${t('myMistakes')}`, reviewCount ? h('span', { class: 'badge' }, String(reviewCount)) : null),
       ],
     }),
+    noticeView(p.notice, p.lang),
     h('h2', {}, t('subjects')),
     h('div', { class: 'grid' },
       p.subjects.map((s, i) => {
@@ -214,6 +224,7 @@ export async function renderSubject(root: HTMLElement, pid: string, sid: string)
         ? [h('a', { class: 'btn on-banner', href: link.mix(pid, sid), title: t('mixedHint') }, '🔀 ' + t('mixedPractice'))]
         : [],
     }),
+    noticeView(p.notice, p.lang),
     h('div', { class: 'list' },
       s.games.map((g, i) => {
         const type = gameTypes[g.type];

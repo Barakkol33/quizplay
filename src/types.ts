@@ -36,6 +36,8 @@ export interface Project {
   lang: Lang;
   description?: string;
   icon?: string;
+  /** Shown on the project's pages, e.g. "may contain mistakes, contact …". Emails become links. */
+  notice?: string;
   subjects: Subject[];
 }
 

@@ -461,3 +461,12 @@ details summary { cursor: pointer; font-weight: 600; }
 .stdin-box label, .stdin-box > span { display: block; margin-bottom: 4px; }
 .output-input.stdin { min-height: 0; }
 .danger-link { color: var(--bad); border-color: transparent; background: transparent; }
+
+/* ---------- project notice ---------- */
+.notice {
+  display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 4px; padding: 12px 16px;
+  border-radius: var(--radius); background: var(--warn-bg); border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+  color: var(--text); font-size: .92rem;
+}
+.notice p { margin: 0; }
+.notice a { font-weight: 600; unicode-bidi: isolate; }

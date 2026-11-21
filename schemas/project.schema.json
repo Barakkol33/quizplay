@@ -136,6 +136,10 @@
       "type": "string",
       "maxLength": 16,
       "description": "An emoji"
+    },
+    "notice": {
+      "type": "string",
+      "description": "Shown on the project pages, e.g. that questions may contain mistakes and whom to contact. Email addresses become links."
     }
   },
   "definitions": {
